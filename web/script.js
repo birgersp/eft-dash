@@ -77,16 +77,24 @@ function main() {
 			innerHTML: buttonText
 		});
 		button.addEventListener("click", () => { setImage(url); });
-		
+
 		index++;
 	}
+
+	let text = appendElement(headerDiv, "h4", {
+		color: "white",
+		display: "inline-block",
+		margin: 0,
+		"margin-left": "2px"
+	});
+	setAttributes(text, { innerHTML: "Tip: Use hotkeys. Press F11 to fullscreen" });
 
 	let imageDiv = appendElement(document.body, "div");
 	app.image = appendElement(imageDiv, "img");
 	setAttributes(app.image, {
 		src: mapURLs.customs,
 		width: "100%",
-		height:"97%"
+		height: "97%"
 	});
 
 	window.addEventListener("keypress", (event) => {
