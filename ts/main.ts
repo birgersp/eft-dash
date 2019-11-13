@@ -49,7 +49,16 @@ function setImage(url: string) {
 	})
 }
 
-setImage(imageOptions[0].url)
+function addHeaderButton(text: String, callback: Function) {
+	let button = new UIElement(ElementType.BUTTON, headerDiv)
+	button.setStyle({
+		"height": "100%"
+	})
+	button.setAttributes({
+		"innerHTML": text
+	})
+	button.element.addEventListener("click", () => { callback() })
+}
 
 function toggleFullscreen() {
 	settings.fullscreen = !settings.fullscreen
@@ -61,12 +70,10 @@ function toggleFullscreen() {
 	}
 }
 
-let fullscreenBtn = new UIElement(ElementType.BUTTON, headerDiv)
-fullscreenBtn.setStyle({
-	"height": "100%"
-})
-fullscreenBtn.setAttributes({
-	"innerHTML": "(f)Fullscreen"
+setImage(imageOptions[0].url)
+
+addHeaderButton("(f)Fullscreen", () => {
+	toggleFullscreen()
 })
 
 for (let index in imageOptions) {
@@ -77,17 +84,14 @@ for (let index in imageOptions) {
 		buttonText += `(${indexInt + 1})`
 	}
 	buttonText += option.label
-	let button = new UIElement(ElementType.BUTTON, headerDiv)
-	button.setStyle({
-		"height": "100%"
-	})
-	button.setAttributes({
-		"innerHTML": buttonText
-	})
-	button.element.addEventListener("click", () => {
+	addHeaderButton(buttonText, () => {
 		setImage(option.url)
 	})
 }
+
+addHeaderButton("Stashes, Customs", () => {
+	window.open("https://i.redd.it/cb4bv3tbggy31.jpg")
+})
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
 googleInput.setAttributes({
