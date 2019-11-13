@@ -24,7 +24,7 @@ class UIElement {
 	}
 
 	setStyle(styleProperties: Object) {
-		UIElement.setStyle(this.element, styleProperties);
+		UIElement.setStyle(this.element, styleProperties)
 	}
 
 	setAttributes(attributes: Object) {

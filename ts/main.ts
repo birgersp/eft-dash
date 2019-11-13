@@ -9,13 +9,13 @@ let imageOptions = [
 	new ImageOption("dorms_customs", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg"),
 	new ImageOption("health_resort_shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg"),
 	new ImageOption("interchange", "https://i.redd.it/bqftzweimvx31.png")
-];
+]
 
 UIElement.setStyle(document.body, {
 	"margin": "0",
 	"background": "#17202A",
 	"overflow-y": "hidden",
 	"margin-bottom": "20px"
-});
+})
 
 let headerDiv = new UIElement(ElementType.DIV, null, document.body)
