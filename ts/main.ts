@@ -30,6 +30,22 @@ headerDiv.setStyle({
 	"height": `${settings.headerHeight}px`
 })
 
+let imageDiv = new UIElement(ElementType.DIV)
+let image = new UIElement(ElementType.IMAGE, imageDiv)
+image.setStyle({
+	"width": "100%",
+	"height": "100%",
+	"object-fit": "contain"
+})
+
+function setImage(url: string) {
+	image.setAttributes({
+		src: url
+	})
+}
+
+setImage(imageOptions[0].url)
+
 for (let index in imageOptions) {
 	let option = imageOptions[index]
 	let buttonText = ""
@@ -38,6 +54,13 @@ for (let index in imageOptions) {
 	button.setAttributes({
 		"innerHTML": buttonText
 	})
-
-	// TODO: set image when clicking
+	button.element.addEventListener("click", () => {
+		setImage(option.url)
+	})
 }
+
+window.addEventListener("keypress", (event) => {
+	let index = parseInt(event.key)
+	if (imageOptions[index])
+		setImage(imageOptions[index].url)
+})
