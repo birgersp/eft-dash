@@ -3,7 +3,8 @@ import "./UIElement"
 
 let settings = {
 	headerHeight: 20,
-	imageMargin: 5
+	imageMargin: 5,
+	fullscreen: false
 }
 
 let imageOptions = [
@@ -50,6 +51,24 @@ function setImage(url: string) {
 
 setImage(imageOptions[0].url)
 
+function toggleFullscreen() {
+	settings.fullscreen = !settings.fullscreen
+	if (settings.fullscreen) {
+		document.documentElement.requestFullscreen()
+	}
+	else {
+		document.exitFullscreen()
+	}
+}
+
+let fullscreenBtn = new UIElement(ElementType.BUTTON, headerDiv)
+fullscreenBtn.setStyle({
+	"height": "100%"
+})
+fullscreenBtn.setAttributes({
+	"innerHTML": "(f)Fullscreen"
+})
+
 for (let index in imageOptions) {
 	let indexInt = parseInt(index)
 	let option = imageOptions[indexInt]
@@ -71,6 +90,11 @@ for (let index in imageOptions) {
 }
 
 window.addEventListener("keypress", (event) => {
+	if (event.key.toLowerCase() == "f") {
+		toggleFullscreen()
+		return
+	}
+
 	let index = parseInt(event.key) - 1
 	if (imageOptions[index])
 		setImage(imageOptions[index].url)
