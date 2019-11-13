@@ -39,7 +39,9 @@ imageDiv.setStyle({
 let image = new UIElement(ElementType.IMAGE, imageDiv)
 image.setStyle({
 	"width": "100%",
-	"object-fit": "contain"
+	"object-fit": "contain",
+	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
+	"display": "none"
 })
 
 let helpText = new UIElement(ElementType.H4, imageDiv)
@@ -54,10 +56,13 @@ helpText.setAttributes({
 
 function setImage(url: string) {
 	image.setStyle({
-		"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
+		"display": "block"
 	})
 	image.setAttributes({
 		src: url
+	})
+	helpText.setStyle({
+		"display": "none"
 	})
 }
 
@@ -82,6 +87,19 @@ function toggleFullscreen() {
 	}
 }
 
+function showHelpText() {
+	helpText.setStyle({
+		"display": "block"
+	})
+	image.setStyle({
+		"display": "none"
+	})
+}
+
+addHeaderButton("(h)Help", () => {
+	showHelpText()
+})
+
 addHeaderButton("(f)Fullscreen", () => {
 	toggleFullscreen()
 })
@@ -105,7 +123,7 @@ addHeaderButton("Stashes, Customs", () => {
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
 googleInput.setAttributes({
-	"placeholder": "Google..."
+	"placeholder": "Search..."
 })
 googleInput.element.addEventListener("keypress", (event) => {
 	if (event.key == "Enter") {
@@ -126,14 +144,16 @@ window.addEventListener("keyup", (event) => {
 	if (event.key.toLowerCase() == "f") {
 		toggleFullscreen()
 		return
-	}
-	if (event.key == " ") {
+	} else if (event.key == " ") {
 		(googleInput.element as HTMLInputElement).select()
 		googleInput.element.focus()
 		return
-	}
-	let index = parseInt(event.key) - 1
-	if (imageOptions[index]) {
-		setImage(imageOptions[index].url)
+	} else if (event.key == "h") {
+		showHelpText()
+	} else {
+		let index = parseInt(event.key) - 1
+		if (imageOptions[index]) {
+			setImage(imageOptions[index].url)
+		}
 	}
 })
