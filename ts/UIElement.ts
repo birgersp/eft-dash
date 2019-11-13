@@ -2,7 +2,8 @@ enum ElementType {
 	DIV = "div",
 	BUTTON = "button",
 	IMAGE = "img",
-	INPUT = "input"
+	INPUT = "input",
+	H4 = "h4"
 }
 
 class UIElement {

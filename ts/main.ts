@@ -39,11 +39,23 @@ imageDiv.setStyle({
 let image = new UIElement(ElementType.IMAGE, imageDiv)
 image.setStyle({
 	"width": "100%",
-	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
 	"object-fit": "contain"
 })
 
+let helpText = new UIElement(ElementType.H4, imageDiv)
+helpText.setStyle({
+	"color": "white",
+	"display": "inline-block",
+	"margin": "10px",
+})
+helpText.setAttributes({
+	"innerHTML": "Space: focus search bar<br>Enter: search<br>Escape: unfocus search bar"
+})
+
 function setImage(url: string) {
+	image.setStyle({
+		"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
+	})
 	image.setAttributes({
 		src: url
 	})
@@ -69,8 +81,6 @@ function toggleFullscreen() {
 		document.exitFullscreen()
 	}
 }
-
-setImage(imageOptions[0].url)
 
 addHeaderButton("(f)Fullscreen", () => {
 	toggleFullscreen()
@@ -117,7 +127,7 @@ window.addEventListener("keyup", (event) => {
 		toggleFullscreen()
 		return
 	}
-	if (event.key == "|") {
+	if (event.key == " ") {
 		(googleInput.element as HTMLInputElement).select()
 		googleInput.element.focus()
 		return
