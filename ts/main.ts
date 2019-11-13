@@ -89,13 +89,25 @@ for (let index in imageOptions) {
 	})
 }
 
+let googleInput = new UIElement(ElementType.INPUT, headerDiv)
+googleInput.setAttributes({
+	"placeholder": "Google..."
+})
+googleInput.element.addEventListener("keypress", (event) => {
+	if (event.key == "Enter") {
+		let value = `escape from tarkov ${(googleInput.element as HTMLInputElement).value}`
+		value = value.replace(" ", "+")
+		window.open(`http://www.google.com/search?q=${value}`)
+	}
+})
+
 window.addEventListener("keypress", (event) => {
 	if (event.key.toLowerCase() == "f") {
 		toggleFullscreen()
 		return
 	}
-
 	let index = parseInt(event.key) - 1
-	if (imageOptions[index])
+	if (imageOptions[index]) {
 		setImage(imageOptions[index].url)
+	}
 })
