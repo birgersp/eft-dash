@@ -13,14 +13,12 @@ class UIElement {
 
 	readonly element: HTMLElement
 
-	constructor(tag: ElementType, parent?: UIElement, parentElement?: HTMLElement) {
+	constructor(tag: ElementType, parent?: UIElement) {
 		this.element = document.createElement(tag)
 		if (parent)
 			parent.element.appendChild(this.element)
-		else if (parentElement)
-			parent.element.appendChild(parentElement)
 		else
-		throw new Error("")
+			document.body.appendChild(this.element)
 	}
 
 	setStyle(styleProperties: Object) {
