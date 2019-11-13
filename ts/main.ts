@@ -1,6 +1,10 @@
 import "./ImageOption"
 import "./UIElement"
 
+let settings = {
+	headerHeight: 20
+}
+
 let imageOptions = [
 	new ImageOption("customs", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/customs_marvelin1_5.jpg.139c43aa06da1ad715636913d1a5e9e3.jpg"),
 	new ImageOption("woods", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/woods_marvelin.jpg.d4692fbf57cdfd608671b16f8caf89ae.jpg"),
@@ -18,4 +22,22 @@ UIElement.setStyle(document.body, {
 	"margin-bottom": "20px"
 })
 
-let headerDiv = new UIElement(ElementType.DIV, null, document.body)
+let loadingHeader = document.getElementById("loading_header")
+loadingHeader.parentElement.removeChild(loadingHeader)
+
+let headerDiv = new UIElement(ElementType.DIV)
+headerDiv.setStyle({
+	"height": `${settings.headerHeight}px`
+})
+
+for (let index in imageOptions) {
+	let option = imageOptions[index]
+	let buttonText = ""
+	buttonText += option.label
+	let button = new UIElement(ElementType.BUTTON, headerDiv)
+	button.setAttributes({
+		"innerHTML": buttonText
+	})
+
+	// TODO: set image when clicking
+}
