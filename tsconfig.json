@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"module": "amd",
+		"plugins": [{
+			"name": "typescript-tslint-plugin"
+		}],
+		"outDir": "web/ts"
+	},
+	"include": [
+		"ts/**/*"
+	]
+}
