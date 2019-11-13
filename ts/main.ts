@@ -105,9 +105,21 @@ googleInput.element.addEventListener("keypress", (event) => {
 	}
 })
 
-window.addEventListener("keypress", (event) => {
+window.addEventListener("keyup", (event) => {
+	if (event.key == "Escape") {
+		googleInput.element.blur()
+		return
+	}
+	if (document.activeElement == googleInput.element) {
+		return
+	}
 	if (event.key.toLowerCase() == "f") {
 		toggleFullscreen()
+		return
+	}
+	if (event.key == "|") {
+		(googleInput.element as HTMLInputElement).select()
+		googleInput.element.focus()
 		return
 	}
 	let index = parseInt(event.key) - 1
