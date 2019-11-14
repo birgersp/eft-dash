@@ -1,4 +1,4 @@
-enum ElementType {
+export enum ElementType {
 	DIV = "div",
 	BUTTON = "button",
 	IMAGE = "img",
@@ -6,7 +6,7 @@ enum ElementType {
 	H4 = "h4"
 }
 
-class UIElement {
+export class UIElement {
 
 	static setStyle(element: HTMLElement, properties: Object) {
 		for (let key in properties) {
@@ -42,9 +42,8 @@ class UIElement {
 	}
 
 	hide() {
-		let current_display_type = this.element.style.getPropertyValue("display")
-		if (current_display_type != "none") {
-			this.display_type = current_display_type
+		if (this.isVisible()) {
+			this.display_type = this.element.style.getPropertyValue("display")
 		}
 		this.setStyle({
 			"display": "none"
@@ -55,5 +54,14 @@ class UIElement {
 		this.setStyle({
 			"display": this.display_type
 		})
+	}
+
+	isVisible() {
+		let display = this.element.style.getPropertyValue("display")
+		if (display == "none") {
+			return false
+		} else {
+			return true
+		}
 	}
 }

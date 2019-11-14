@@ -1,5 +1,8 @@
-import "./ImageOption"
-import "./UIElement"
+import { ImageOption } from "./ImageOption"
+import { UIElement, ElementType } from "./UIElement"
+import { VisibleElementSelector } from "./VisibleElementSelector"
+
+let elementSelector = new VisibleElementSelector()
 
 let settings = {
 	headerHeight: 20,
@@ -42,6 +45,7 @@ image.setStyle({
 	"object-fit": "contain",
 	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
 })
+elementSelector.addElement(image)
 
 let helpText = new UIElement(ElementType.H4, imageDiv)
 helpText.setStyle({
@@ -52,13 +56,13 @@ helpText.setStyle({
 helpText.setAttributes({
 	"innerHTML": "Space: focus search bar<br>Enter: search<br>Escape: unfocus search bar"
 })
+elementSelector.addElement(helpText)
 
 function setImage(url: string) {
 	image.setAttributes({
 		src: url
 	})
-	image.show()
-	helpText.hide()
+	elementSelector.showElement(image)
 }
 
 function addHeaderButton(text: String, callback: Function) {
@@ -83,14 +87,13 @@ function toggleFullscreen() {
 }
 
 function showHelpText() {
-	image.hide()
-	helpText.show()
+	elementSelector.showElement(helpText)
 }
 
 showHelpText()
 
 addHeaderButton("(h)Help", () => {
-	showHelpText()
+
 })
 
 addHeaderButton("(f)Fullscreen", () => {

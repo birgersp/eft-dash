@@ -1,4 +1,4 @@
-class ImageOption {
+export class ImageOption {
 
 	readonly label: string
 	readonly url: string
