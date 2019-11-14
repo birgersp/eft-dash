@@ -34,6 +34,9 @@ function showHelpText() {
 	elementSelector.showElement(helpText)
 }
 
+
+// Setup
+
 let elementSelector = new VisibleElementSelector()
 
 let settings = {
@@ -61,34 +64,11 @@ UIElement.setStyle(document.body, {
 let loadingHeader = document.getElementById("loading_header")
 loadingHeader.parentElement.removeChild(loadingHeader)
 
+
+// Header
+
 let headerDiv = new UIElement(ElementType.DIV)
 headerDiv.setStyle({ "height": `${settings.headerHeight}px` })
-
-let imageDiv = new UIElement(ElementType.DIV)
-imageDiv.setStyle({
-	"margin-top": `${settings.imageMargin}px`,
-	"margin-bottom": `${settings.imageMargin}px`
-})
-let image = new UIElement(ElementType.IMAGE, imageDiv)
-image.setStyle({
-	"width": "100%",
-	"object-fit": "contain",
-	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
-})
-elementSelector.addElement(image)
-
-let helpText = new UIElement(ElementType.H4, imageDiv)
-helpText.setStyle({
-	"color": "white",
-	"display": "inline-block",
-	"margin": "10px"
-})
-helpText.setAttributes({
-	"innerHTML": ""
-})
-elementSelector.addElement(helpText)
-
-setImage(imageOptions[0].url)
 
 addHeaderButton("(h)Help", () => {
 	showHelpText()
@@ -127,6 +107,37 @@ googleInput.element.addEventListener("keypress", (event) => {
 	}
 })
 
+
+// Content
+
+let contentDiv = new UIElement(ElementType.DIV)
+contentDiv.setStyle({
+	"margin-top": `${settings.imageMargin}px`,
+	"margin-bottom": `${settings.imageMargin}px`
+})
+
+let helpText = new UIElement(ElementType.H4, contentDiv)
+helpText.setStyle({
+	"color": "white",
+	"display": "inline-block",
+	"margin": "10px"
+})
+helpText.setAttributes({
+	"innerHTML": ""
+})
+elementSelector.addElement(helpText)
+
+let image = new UIElement(ElementType.IMAGE, contentDiv)
+image.setStyle({
+	"width": "100%",
+	"object-fit": "contain",
+	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
+})
+elementSelector.addElement(image)
+
+
+// Key press
+
 window.addEventListener("keyup", (event) => {
 	let key = event.key
 	if (key == "Escape") {
@@ -152,3 +163,5 @@ window.addEventListener("keyup", (event) => {
 		}
 	}
 })
+
+setImage(imageOptions[0].url)
