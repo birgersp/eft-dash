@@ -12,9 +12,6 @@ function setImage(url: string) {
 
 function addHeaderButton(text: String, callback: Function) {
 	let button = new UIElement(ElementType.BUTTON, headerDiv)
-	button.setStyle({
-		"height": "100%"
-	})
 	button.setAttributes({
 		"innerHTML": text
 	})
@@ -35,15 +32,23 @@ function showHelpText() {
 	elementSelector.showElement(helpText)
 }
 
+function updateSize() {
+	let contentSize = window.innerHeight
+	let headerSize = headerDiv.element.clientHeight
+	let imageHeight = contentSize - headerSize
+	console.log(imageHeight)
+	image.setStyle({
+		"height": `calc(${imageHeight}px - ${settings.margin * 2}em)`
+	})
+}
+
 
 // Setup
 
 let elementSelector = new VisibleElementSelector()
 
 let settings = {
-	headerHeight: 20,
-	imageMargin: 5,
-	historyMargin: 5,
+	margin: .3,
 	fullscreen: false
 }
 
@@ -70,7 +75,6 @@ loadingHeader.parentElement.removeChild(loadingHeader)
 // Header
 
 let headerDiv = new UIElement(ElementType.DIV)
-headerDiv.setStyle({ "height": `${settings.headerHeight}px` })
 
 addHeaderButton("(h)Help", () => {
 	showHelpText()
@@ -117,35 +121,32 @@ googleInput.element.addEventListener("keypress", (event) => {
 
 let contentDiv = new UIElement(ElementType.DIV)
 contentDiv.setStyle({
-	"margin-top": `${settings.imageMargin}px`,
-	"margin-bottom": `${settings.imageMargin}px`
+	"margin-top": `${settings.margin}em`,
+	"margin-bottom": `${settings.margin}em`
 })
 
 let helpText = new UIElement(ElementType.H4, contentDiv)
 helpText.setStyle({
 	"color": "white",
 	"display": "inline-block",
-	"margin": "10px"
+	"margin": `${settings.margin}em`
 })
 helpText.setAttributes({
-	"innerHTML": ""
+	"innerHTML": "(help text)"
 })
 elementSelector.addElement(helpText)
 
 let image = new UIElement(ElementType.IMAGE, contentDiv)
 image.setStyle({
 	"width": "100%",
-	"object-fit": "contain",
-	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
-	"position": "relative"
-	"z-index": "-1"
+	"object-fit": "contain"
 })
 elementSelector.addElement(image)
 
 
 let searchHistory = new SearchHistory(contentDiv)
 searchHistory.setStyle({
-	"margin": `${settings.historyMargin}px`
+	"margin": `${settings.margin}em`
 })
 elementSelector.addElement(searchHistory)
 
@@ -178,4 +179,14 @@ window.addEventListener("keyup", (event) => {
 	}
 })
 
-setImage(imageOptions[0].url)
+setImage(imageOptions[2].url)
+
+
+let resizeTimeout: number
+window.addEventListener("resize", () => {
+	clearTimeout(resizeTimeout)
+	resizeTimeout = setTimeout(() => {
+		updateSize()
+	}, 100)
+})
+updateSize()
