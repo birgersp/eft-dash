@@ -30,9 +30,7 @@ let loadingHeader = document.getElementById("loading_header")
 loadingHeader.parentElement.removeChild(loadingHeader)
 
 let headerDiv = new UIElement(ElementType.DIV)
-headerDiv.setStyle({
-	"height": `${settings.headerHeight}px`
-})
+headerDiv.setStyle({ "height": `${settings.headerHeight}px` })
 
 let imageDiv = new UIElement(ElementType.DIV)
 imageDiv.setStyle({
@@ -93,7 +91,7 @@ function showHelpText() {
 showHelpText()
 
 addHeaderButton("(h)Help", () => {
-
+	showHelpText()
 })
 
 addHeaderButton("(f)Fullscreen", () => {
@@ -130,24 +128,25 @@ googleInput.element.addEventListener("keypress", (event) => {
 })
 
 window.addEventListener("keyup", (event) => {
-	if (event.key == "Escape") {
+	let key = event.key
+	if (key == "Escape") {
 		googleInput.element.blur()
 		return
 	}
 	if (document.activeElement == googleInput.element) {
 		return
 	}
-	if (event.key.toLowerCase() == "f") {
+	if (key == "f") {
 		toggleFullscreen()
 		return
-	} else if (event.key == " ") {
+	} else if (key == " ") {
 		(googleInput.element as HTMLInputElement).select()
 		googleInput.element.focus()
 		return
-	} else if (event.key == "h") {
+	} else if (key == "h") {
 		showHelpText()
 	} else {
-		let index = parseInt(event.key) - 1
+		let index = parseInt(key) - 1
 		if (imageOptions[index]) {
 			setImage(imageOptions[index].url)
 		}
