@@ -52,7 +52,7 @@ helpText.setStyle({
 	"margin": "10px"
 })
 helpText.setAttributes({
-	"innerHTML": "Space: focus search bar<br>Enter: search<br>Escape: unfocus search bar"
+	"innerHTML": ""
 })
 elementSelector.addElement(helpText)
 
@@ -117,7 +117,7 @@ addHeaderButton("Stashes, Customs", () => {
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
 googleInput.setAttributes({
-	"placeholder": "Search..."
+	"placeholder": "(s)Search..."
 })
 googleInput.element.addEventListener("keypress", (event) => {
 	if (event.key == "Enter") {
@@ -139,7 +139,7 @@ window.addEventListener("keyup", (event) => {
 	if (key == "f") {
 		toggleFullscreen()
 		return
-	} else if (key == " ") {
+	} else if (key == "s") {
 		(googleInput.element as HTMLInputElement).select()
 		googleInput.element.focus()
 		return
