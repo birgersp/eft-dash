@@ -2,6 +2,38 @@ import { ImageOption } from "./ImageOption"
 import { UIElement, ElementType } from "./UIElement"
 import { VisibleElementSelector } from "./VisibleElementSelector"
 
+function setImage(url: string) {
+	image.setAttributes({
+		src: url
+	})
+	elementSelector.showElement(image)
+}
+
+function addHeaderButton(text: String, callback: Function) {
+	let button = new UIElement(ElementType.BUTTON, headerDiv)
+	button.setStyle({
+		"height": "100%"
+	})
+	button.setAttributes({
+		"innerHTML": text
+	})
+	button.element.addEventListener("click", () => { callback() })
+}
+
+function toggleFullscreen() {
+	settings.fullscreen = !settings.fullscreen
+	if (settings.fullscreen) {
+		document.documentElement.requestFullscreen()
+	}
+	else {
+		document.exitFullscreen()
+	}
+}
+
+function showHelpText() {
+	elementSelector.showElement(helpText)
+}
+
 let elementSelector = new VisibleElementSelector()
 
 let settings = {
@@ -55,38 +87,6 @@ helpText.setAttributes({
 	"innerHTML": ""
 })
 elementSelector.addElement(helpText)
-
-function setImage(url: string) {
-	image.setAttributes({
-		src: url
-	})
-	elementSelector.showElement(image)
-}
-
-function addHeaderButton(text: String, callback: Function) {
-	let button = new UIElement(ElementType.BUTTON, headerDiv)
-	button.setStyle({
-		"height": "100%"
-	})
-	button.setAttributes({
-		"innerHTML": text
-	})
-	button.element.addEventListener("click", () => { callback() })
-}
-
-function toggleFullscreen() {
-	settings.fullscreen = !settings.fullscreen
-	if (settings.fullscreen) {
-		document.documentElement.requestFullscreen()
-	}
-	else {
-		document.exitFullscreen()
-	}
-}
-
-function showHelpText() {
-	elementSelector.showElement(helpText)
-}
 
 setImage(imageOptions[0].url)
 
