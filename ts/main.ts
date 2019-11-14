@@ -136,7 +136,9 @@ let image = new UIElement(ElementType.IMAGE, contentDiv)
 image.setStyle({
 	"width": "100%",
 	"object-fit": "contain",
-	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
+	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
+	"position": "relative"
+	"z-index": "-1"
 })
 elementSelector.addElement(image)
 
