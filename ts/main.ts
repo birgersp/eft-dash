@@ -41,7 +41,6 @@ image.setStyle({
 	"width": "100%",
 	"object-fit": "contain",
 	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
-	"display": "none"
 })
 
 let helpText = new UIElement(ElementType.H4, imageDiv)
@@ -55,15 +54,11 @@ helpText.setAttributes({
 })
 
 function setImage(url: string) {
-	image.setStyle({
-		"display": "block"
-	})
 	image.setAttributes({
 		src: url
 	})
-	helpText.setStyle({
-		"display": "none"
-	})
+	image.show()
+	helpText.hide()
 }
 
 function addHeaderButton(text: String, callback: Function) {
@@ -88,13 +83,11 @@ function toggleFullscreen() {
 }
 
 function showHelpText() {
-	helpText.setStyle({
-		"display": "block"
-	})
-	image.setStyle({
-		"display": "none"
-	})
+	image.hide()
+	helpText.show()
 }
+
+showHelpText()
 
 addHeaderButton("(h)Help", () => {
 	showHelpText()

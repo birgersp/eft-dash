@@ -16,6 +16,7 @@ class UIElement {
 	}
 
 	readonly element: HTMLElement
+	private display_type = "block"
 
 	constructor(tag: ElementType, parent?: UIElement) {
 		this.element = document.createElement(tag)
@@ -38,5 +39,21 @@ class UIElement {
 				this.element.setAttribute(key, value)
 			}
 		}
+	}
+
+	hide() {
+		let current_display_type = this.element.style.getPropertyValue("display")
+		if (current_display_type != "none") {
+			this.display_type = current_display_type
+		}
+		this.setStyle({
+			"display": "none"
+		})
+	}
+
+	show() {
+		this.setStyle({
+			"display": this.display_type
+		})
 	}
 }
