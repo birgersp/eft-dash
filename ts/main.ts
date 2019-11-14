@@ -95,7 +95,7 @@ for (let index in imageOptions) {
 
 addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
 
-addHeaderButton("History", () => { elementSelector.showElement(searchHistory) })
+addHeaderButton("S.History", () => { elementSelector.showElement(searchHistory) })
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
 googleInput.setAttributes({
