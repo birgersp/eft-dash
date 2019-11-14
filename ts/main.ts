@@ -1,6 +1,7 @@
 import { ImageOption } from "./ImageOption"
 import { UIElement, ElementType } from "./UIElement"
 import { VisibleElementSelector } from "./VisibleElementSelector"
+import { SearchHistory } from "./SearchHistory"
 
 function setImage(url: string) {
 	image.setAttributes({
@@ -42,6 +43,7 @@ let elementSelector = new VisibleElementSelector()
 let settings = {
 	headerHeight: 20,
 	imageMargin: 5,
+	historyMargin: 5,
 	fullscreen: false
 }
 
@@ -91,9 +93,9 @@ for (let index in imageOptions) {
 	})
 }
 
-addHeaderButton("Stashes, Customs", () => {
-	window.open("https://i.redd.it/cb4bv3tbggy31.jpg")
-})
+addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
+
+addHeaderButton("History", () => { elementSelector.showElement(searchHistory) })
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
 googleInput.setAttributes({
@@ -101,9 +103,12 @@ googleInput.setAttributes({
 })
 googleInput.element.addEventListener("keypress", (event) => {
 	if (event.key == "Enter") {
-		let value = `escape from tarkov ${(googleInput.element as HTMLInputElement).value}`
-		value = value.replace(" ", "+")
-		window.open(`http://www.google.com/search?q=${value}`)
+		let searchInputValue = (googleInput.element as HTMLInputElement).value
+		let url = `escape from tarkov ${searchInputValue}`
+		url = url.replace(" ", "+")
+		url = `http://www.google.com/search?q=${url}`
+		searchHistory.add(searchInputValue, url)
+		window.open(url)
 	}
 })
 
@@ -134,6 +139,13 @@ image.setStyle({
 	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
 })
 elementSelector.addElement(image)
+
+
+let searchHistory = new SearchHistory(contentDiv)
+searchHistory.setStyle({
+	"margin": `${settings.historyMargin}px`
+})
+elementSelector.addElement(searchHistory)
 
 
 // Key press

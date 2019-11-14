@@ -3,7 +3,9 @@ export enum ElementType {
 	BUTTON = "button",
 	IMAGE = "img",
 	INPUT = "input",
-	H4 = "h4"
+	H4 = "h4",
+	LINK = "a",
+	LINE_BREAK = "br"
 }
 
 export class UIElement {

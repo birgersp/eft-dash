@@ -1,4 +1,4 @@
-import "./UIElement"
+import { UIElement } from "./UIElement"
 
 export class VisibleElementSelector {
 
