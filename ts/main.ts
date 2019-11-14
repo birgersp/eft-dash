@@ -41,7 +41,7 @@ let image = new UIElement(ElementType.IMAGE, imageDiv)
 image.setStyle({
 	"width": "100%",
 	"object-fit": "contain",
-	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`,
+	"height": `calc(100% - ${settings.headerHeight}px - ${settings.imageMargin * 2}px)`
 })
 elementSelector.addElement(image)
 
@@ -49,7 +49,7 @@ let helpText = new UIElement(ElementType.H4, imageDiv)
 helpText.setStyle({
 	"color": "white",
 	"display": "inline-block",
-	"margin": "10px",
+	"margin": "10px"
 })
 helpText.setAttributes({
 	"innerHTML": "Space: focus search bar<br>Enter: search<br>Escape: unfocus search bar"
@@ -88,7 +88,7 @@ function showHelpText() {
 	elementSelector.showElement(helpText)
 }
 
-showHelpText()
+setImage(imageOptions[0].url)
 
 addHeaderButton("(h)Help", () => {
 	showHelpText()
