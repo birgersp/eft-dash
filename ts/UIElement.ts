@@ -66,4 +66,9 @@ export class UIElement {
 			return true
 		}
 	}
+
+	removeChildren() {
+		while (this.element.firstChild)
+			this.element.removeChild(this.element.firstChild)
+	}
 }

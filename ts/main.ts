@@ -105,9 +105,9 @@ googleInput.element.addEventListener("keypress", (event) => {
 	if (event.key == "Enter") {
 		let searchInputValue = (googleInput.element as HTMLInputElement).value
 		let url = `escape from tarkov ${searchInputValue}`
-		url = url.replace(" ", "+")
+		url = url.replace(/ /g, "+")
 		url = `http://www.google.com/search?q=${url}`
-		searchHistory.add(searchInputValue, url)
+		searchHistory.addSearchAndSave(searchInputValue, url)
 		window.open(url)
 	}
 })
