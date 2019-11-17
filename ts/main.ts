@@ -99,6 +99,10 @@ for (let index in imageOptions) {
 
 addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
 
+addHeaderButton("Quest Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/1/19/QuestItemRequirements.png") })
+
+addHeaderButton("Hideout Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/3/39/Hideout-Requirements-Items-to-Keep.jpg") })
+
 addHeaderButton("S.History", () => { elementSelector.showElement(searchHistory) })
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
