@@ -183,7 +183,7 @@ window.addEventListener("keyup", (event) => {
 	}
 })
 
-setImage(imageOptions[2].url)
+setImage(imageOptions[0].url)
 
 
 let resizeTimeout: number
