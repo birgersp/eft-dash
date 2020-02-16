@@ -1,6 +1,7 @@
 import { ImageOption } from "./ImageOption"
 import { UIElement, ElementType } from "./UIElement"
 import { SearchHistory } from "./SearchHistory"
+import { HelpTextBuilder } from "./HelpTextBuilder"
 
 function hideContentElements() {
 	for (let index in contentElements) {
@@ -42,7 +43,7 @@ function toggleFullscreen() {
 
 function showHelpText() {
 	hideContentElements()
-	helpText.show()
+	helpTextContainer.show()
 }
 
 function updateSize() {
@@ -144,15 +145,15 @@ contentDiv.setStyle({
 	"margin-bottom": `${settings.margin}em`
 })
 
-let helpText = addContentElement(ElementType.H4)
-helpText.setStyle({
-	"color": "white",
-	"display": "inline-block",
-	"margin": `${settings.margin}em`
+let helpTextContainer = addContentElement(ElementType.DIV)
+helpTextContainer.setStyle({
+	"padding-left": `${settings.margin}em`
 })
-helpText.setAttributes({
-	"innerHTML": "<a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Maps</a>"
-})
+let helpTextBuilder = new HelpTextBuilder(helpTextContainer)
+helpTextBuilder
+	.addH4("EFT Dash")
+	.addParagraph("by <a href=\"https://github.com/birgersp\">birgersp</a>")
+	.addParagraph("Huge thanks to <a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Marvelin for creating these awesome maps</a>")
 
 let loadingLabel = addContentElement(ElementType.H4)
 loadingLabel.setStyle({

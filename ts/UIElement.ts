@@ -5,7 +5,8 @@ export enum ElementType {
 	INPUT = "input",
 	H4 = "h4",
 	LINK = "a",
-	LINE_BREAK = "br"
+	LINE_BREAK = "br",
+	PARAGRAPH = "p"
 }
 
 export class UIElement {
@@ -69,7 +70,6 @@ export class UIElement {
 	}
 
 	setTransition(seconds: number) {
-
 		this.setStyle({ transition: `opacity ${seconds}s linear` })
 	}
 }
