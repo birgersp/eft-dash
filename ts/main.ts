@@ -19,7 +19,7 @@ function addHeaderButton(text: String, callback: Function) {
 }
 
 function toggleFullscreen() {
-	settings.fullscreen = !settings.fullscreen
+	settings.fullscreen = (document.fullscreenElement == null)
 	if (settings.fullscreen) {
 		document.documentElement.requestFullscreen()
 	}
