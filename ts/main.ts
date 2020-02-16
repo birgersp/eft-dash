@@ -4,7 +4,10 @@ import { VisibleElementSelector } from "./VisibleElementSelector"
 import { SearchHistory } from "./SearchHistory"
 
 function setImage(url: string) {
-	elementSelector.showElement(loadingLabel)
+	elementSelector.showElement(image)
+	image.setStyle({
+		opacity: 0
+	})
 	loadingLabel.setAttributes({ innerHTML: `LOADING ${url}` })
 	image.setAttributes({
 		src: url
@@ -151,12 +154,16 @@ loadingLabel.setStyle({
 elementSelector.addElement(loadingLabel)
 
 let image = new UIElement(ElementType.IMAGE, contentDiv)
+image.setAttributes({
+	id: "image"
+})
 image.setStyle({
 	"width": "100%",
-	"object-fit": "contain"
+	"object-fit": "contain",
+	transition: "opacity .5s linear"
 })
 image.element.addEventListener("load", () => {
-	elementSelector.showElement(image)
+	image.setStyle({ opacity: 1 })
 })
 elementSelector.addElement(image)
 
