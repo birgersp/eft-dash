@@ -156,24 +156,28 @@ elementSelector.addElement(searchHistory)
 
 // Key press
 
+let keyActions: Record<string, () => void> = {
+	"f": toggleFullscreen,
+	"s": () => {
+		(googleInput.element as HTMLInputElement).select()
+		googleInput.element.focus()
+	},
+	"h": showHelpText
+}
+
 window.addEventListener("keyup", (event) => {
 	let key = event.key
 	if (key == "Escape") {
 		googleInput.element.blur()
 		return
 	}
+	// Ignore key presses while search bar is in focus
 	if (document.activeElement == googleInput.element) {
 		return
 	}
-	if (key == "f") {
-		toggleFullscreen()
-		return
-	} else if (key == "s") {
-		(googleInput.element as HTMLInputElement).select()
-		googleInput.element.focus()
-		return
-	} else if (key == "h") {
-		showHelpText()
+	let keyAction = keyActions[key]
+	if (keyAction != null) {
+		keyAction()
 	} else {
 		let index = parseInt(key) - 1
 		if (imageOptions[index]) {
