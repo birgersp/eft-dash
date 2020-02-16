@@ -1,4 +1,4 @@
 export class LocalStorageData {
 
-	imageUrl: string
+	imageIndex: number
 }

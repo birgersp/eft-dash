@@ -17,12 +17,13 @@ function addContentElement(element: UIElement): UIElement {
 	return element
 }
 
-function setImage(url: string) {
+function setImage(index: number) {
+	let url = imageOptions[index].url
 	hideContentElements()
 	loadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
 	loadingLabel.show()
 	image.setAttributes({ src: url })
-	localStorageData.imageUrl = url
+	localStorageData.imageIndex = index
 	saveLocal()
 }
 
@@ -85,7 +86,7 @@ let imageOptions = [
 ]
 
 let localStorageData = new LocalStorageData()
-localStorageData.imageUrl = imageOptions[0].url
+localStorageData.imageIndex = 0
 
 UIElement.setStyle(document.body, {
 	"margin": "0",
@@ -120,7 +121,7 @@ for (let index in imageOptions) {
 	}
 	buttonText += option.label
 	addHeaderButton(buttonText, () => {
-		setImage(option.url)
+		setImage(indexInt)
 	})
 }
 
@@ -230,7 +231,7 @@ window.addEventListener("keyup", (event) => {
 	} else {
 		let index = parseInt(key) - 1
 		if (imageOptions[index]) {
-			setImage(imageOptions[index].url)
+			setImage(index)
 		}
 	}
 })
@@ -253,4 +254,4 @@ if (data != null) {
 	localStorageData = JSON.parse(data)
 }
 
-setImage(localStorageData.imageUrl)
+setImage(localStorageData.imageIndex)

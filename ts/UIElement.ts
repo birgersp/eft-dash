@@ -27,7 +27,7 @@ export class UIElement {
 		else
 			this.element = specifier
 		if (parent)
-			parent.element.appendChild(this.element)
+			parent.addChild(this)
 		else
 			document.body.appendChild(this.element)
 		this.setTransition(0.2)
@@ -74,5 +74,9 @@ export class UIElement {
 
 	setTransition(seconds: number) {
 		this.setStyle({ transition: `opacity ${seconds}s linear` })
+	}
+
+	addChild(element: UIElement) {
+		this.element.appendChild(element.element)
 	}
 }
