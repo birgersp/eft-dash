@@ -94,7 +94,7 @@ UIElement.setStyle(document.body, {
 
 let loadingHeaderElement = document.getElementById("loading_header")
 let loadingHeader = new UIElement(loadingHeaderElement)
-loadingHeader.hide()
+setTimeout(() => { loadingHeader.hide() }, 10)
 
 
 // Header
