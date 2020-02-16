@@ -4,7 +4,7 @@ import { VisibleElementSelector } from "./VisibleElementSelector"
 import { SearchHistory } from "./SearchHistory"
 
 function setImage(url: string) {
-	elementSelector.showElement(image)
+	elementSelector.showElement(loadingLabel)
 	image.setStyle({
 		opacity: 0
 	})
@@ -132,7 +132,13 @@ contentDiv.setStyle({
 	"margin-bottom": `${settings.margin}em`
 })
 
-let helpText = new UIElement(ElementType.H4, contentDiv)
+function addContentElement(type: ElementType): UIElement {
+	let element = new UIElement(type, contentDiv)
+	element.setStyle({ position: "absolute" })
+	return element
+}
+
+let helpText = addContentElement(ElementType.H4)
 helpText.setStyle({
 	"color": "white",
 	"display": "inline-block",
@@ -143,7 +149,7 @@ helpText.setAttributes({
 })
 elementSelector.addElement(helpText)
 
-let loadingLabel = new UIElement(ElementType.H4, contentDiv)
+let loadingLabel = addContentElement(ElementType.H4)
 loadingLabel.setStyle({
 	position: "absolute",
 	top: "50%",
@@ -153,7 +159,7 @@ loadingLabel.setStyle({
 })
 elementSelector.addElement(loadingLabel)
 
-let image = new UIElement(ElementType.IMAGE, contentDiv)
+let image = addContentElement(ElementType.IMAGE)
 image.setAttributes({
 	id: "image"
 })
@@ -163,7 +169,7 @@ image.setStyle({
 	transition: "opacity .5s linear"
 })
 image.element.addEventListener("load", () => {
-	image.setStyle({ opacity: 1 })
+	elementSelector.showElement(image)
 })
 elementSelector.addElement(image)
 

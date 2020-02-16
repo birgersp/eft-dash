@@ -4,23 +4,18 @@ export class VisibleElementSelector {
 
 	elements: UIElement[] = []
 
-	constructor() {
-	}
-
 	addElement(newElement: UIElement) {
 		for (let index in this.elements) {
 			let element = this.elements[index]
-			if (element.isVisible()) {
-				newElement.hide()
-				break
-			}
+			element.hide()
 		}
 		this.elements.push(newElement)
 	}
 
 	showElement(element: UIElement) {
 		for (let index in this.elements) {
-			this.elements[index].hide()
+			let otherElement = this.elements[index]
+			otherElement.hide()
 		}
 		element.show()
 	}

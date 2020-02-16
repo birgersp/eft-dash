@@ -18,7 +18,7 @@ export class UIElement {
 	}
 
 	readonly element: HTMLElement
-	private displayType = "block"
+	private opacity = 1
 
 	constructor(tag: ElementType, parent?: UIElement) {
 		this.element = document.createElement(tag)
@@ -26,6 +26,7 @@ export class UIElement {
 			parent.element.appendChild(this.element)
 		else
 			document.body.appendChild(this.element)
+		this.setTransition(0.2)
 	}
 
 	setStyle(styleProperties: Object) {
@@ -44,31 +45,22 @@ export class UIElement {
 	}
 
 	hide() {
-		if (this.isVisible()) {
-			this.displayType = this.element.style.getPropertyValue("display")
-		}
-		this.setStyle({
-			"display": "none"
-		})
+		this.opacity = 0
+		this.setStyle({ opacity: this.opacity })
 	}
 
 	show() {
-		this.setStyle({
-			"display": this.displayType
-		})
-	}
-
-	isVisible() {
-		let display = this.element.style.getPropertyValue("display")
-		if (display == "none") {
-			return false
-		} else {
-			return true
-		}
+		this.opacity = 1
+		this.setStyle({ opacity: this.opacity })
 	}
 
 	removeChildren() {
 		while (this.element.firstChild)
 			this.element.removeChild(this.element.firstChild)
+	}
+
+	setTransition(seconds: number) {
+
+		this.setStyle({ transition: `opacity ${seconds}s linear` })
 	}
 }
