@@ -135,7 +135,7 @@ helpText.setStyle({
 	"margin": `${settings.margin}em`
 })
 helpText.setAttributes({
-	"innerHTML": "(help text)"
+	"innerHTML": "<a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Maps</a>"
 })
 elementSelector.addElement(helpText)
 
@@ -183,7 +183,6 @@ window.addEventListener("keyup", (event) => {
 })
 
 setImage(imageOptions[0].url)
-
 
 let resizeTimeout: number
 window.addEventListener("resize", () => {
