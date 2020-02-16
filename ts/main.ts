@@ -10,8 +10,8 @@ function hideContentElements() {
 	}
 }
 
-function addContentElement(type: ElementType): UIElement {
-	let element = new UIElement(type, contentDiv)
+function addContentElement(element: UIElement) {
+	contentDiv.element.appendChild(element.element)
 	element.setStyle({ position: "absolute", opacity: 0 })
 	contentElements.push(element)
 	return element
@@ -159,7 +159,7 @@ contentDiv.setStyle({
 	"margin-bottom": `${settings.margin}em`
 })
 
-let helpTextContainer = addContentElement(ElementType.DIV)
+let helpTextContainer = addContentElement(new UIElement(ElementType.DIV))
 helpTextContainer.setStyle({
 	"padding-left": `${settings.margin}em`
 })
@@ -169,7 +169,7 @@ helpTextBuilder
 	.addParagraph("by <a href=\"https://github.com/birgersp\">birgersp</a>")
 	.addParagraph("Huge thanks to <a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Marvelin for creating these awesome maps</a>")
 
-let loadingLabel = addContentElement(ElementType.H4)
+let loadingLabel = addContentElement(new UIElement(ElementType.H4))
 loadingLabel.setStyle({
 	position: "absolute",
 	top: "50%",
@@ -178,7 +178,7 @@ loadingLabel.setStyle({
 	color: "white"
 })
 
-let image = addContentElement(ElementType.IMAGE)
+let image = addContentElement(new UIElement(ElementType.IMAGE))
 image.setAttributes({
 	id: "image"
 })
@@ -192,7 +192,7 @@ image.element.addEventListener("load", () => {
 	loadingLabel.hide()
 })
 
-let searchHistory = new SearchHistory(contentDiv)
+let searchHistory = addContentElement(new SearchHistory(contentDiv))
 searchHistory.setStyle({
 	"margin": `${settings.margin}em`
 })
