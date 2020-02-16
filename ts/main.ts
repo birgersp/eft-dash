@@ -36,7 +36,6 @@ function updateSize() {
 	let contentSize = window.innerHeight
 	let headerSize = headerDiv.element.clientHeight
 	let imageHeight = contentSize - headerSize
-	console.log(imageHeight)
 	image.setStyle({
 		"height": `calc(${imageHeight}px - ${settings.margin * 2}em)`
 	})
