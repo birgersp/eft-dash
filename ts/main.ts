@@ -188,8 +188,7 @@ image.setAttributes({
 })
 image.setStyle({
 	"width": "100%",
-	"object-fit": "contain",
-	transition: "opacity .5s linear"
+	"object-fit": "contain"
 })
 image.element.addEventListener("load", () => {
 	image.show()
