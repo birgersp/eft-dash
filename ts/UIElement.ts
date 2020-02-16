@@ -27,6 +27,15 @@ export class UIElement {
 		else
 			document.body.appendChild(this.element)
 		this.setTransition(0.2)
+		this.element.addEventListener("transitionend", () => {
+			let opacityString = this.element.style.getPropertyValue("opacity")
+			if (opacityString != "") {
+				let opacity = parseFloat(opacityString)
+				if (opacity <= 0) {
+					this.setStyle({ display: "none" })
+				}
+			}
+		})
 	}
 
 	setStyle(styleProperties: Object) {
@@ -51,7 +60,7 @@ export class UIElement {
 
 	show() {
 		this.opacity = 1
-		this.setStyle({ opacity: this.opacity })
+		this.setStyle({ display: "block", opacity: this.opacity })
 	}
 
 	removeChildren() {
