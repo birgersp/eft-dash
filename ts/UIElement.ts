@@ -18,7 +18,7 @@ export class UIElement {
 	}
 
 	readonly element: HTMLElement
-	private display_type = "block"
+	private displayType = "block"
 
 	constructor(tag: ElementType, parent?: UIElement) {
 		this.element = document.createElement(tag)
@@ -45,7 +45,7 @@ export class UIElement {
 
 	hide() {
 		if (this.isVisible()) {
-			this.display_type = this.element.style.getPropertyValue("display")
+			this.displayType = this.element.style.getPropertyValue("display")
 		}
 		this.setStyle({
 			"display": "none"
@@ -54,7 +54,7 @@ export class UIElement {
 
 	show() {
 		this.setStyle({
-			"display": this.display_type
+			"display": this.displayType
 		})
 	}
 
