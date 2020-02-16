@@ -21,8 +21,11 @@ export class UIElement {
 	readonly element: HTMLElement
 	private opacity = 1
 
-	constructor(tag: ElementType, parent?: UIElement) {
-		this.element = document.createElement(tag)
+	constructor(specifier: ElementType | HTMLElement, parent?: UIElement) {
+		if (typeof specifier == "string")
+			this.element = document.createElement(specifier)
+		else
+			this.element = specifier
 		if (parent)
 			parent.element.appendChild(this.element)
 		else

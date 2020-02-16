@@ -92,8 +92,9 @@ UIElement.setStyle(document.body, {
 	"overflow-y": "hidden"
 })
 
-let loadingHeader = document.getElementById("loading_header")
-loadingHeader.parentElement.removeChild(loadingHeader)
+let loadingHeaderElement = document.getElementById("loading_header")
+let loadingHeader = new UIElement(loadingHeaderElement)
+loadingHeader.hide()
 
 
 // Header
