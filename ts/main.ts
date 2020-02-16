@@ -1,17 +1,25 @@
 import { ImageOption } from "./ImageOption"
 import { UIElement, ElementType } from "./UIElement"
-import { VisibleElementSelector } from "./VisibleElementSelector"
 import { SearchHistory } from "./SearchHistory"
 
+function hideContentElements() {
+	for (let index in contentElements) {
+		contentElements[index].hide()
+	}
+}
+
+function addContentElement(type: ElementType): UIElement {
+	let element = new UIElement(type, contentDiv)
+	element.setStyle({ position: "absolute" })
+	contentElements.push(element)
+	return element
+}
+
 function setImage(url: string) {
-	elementSelector.showElement(loadingLabel)
-	image.setStyle({
-		opacity: 0
-	})
-	loadingLabel.setAttributes({ innerHTML: `LOADING ${url}` })
-	image.setAttributes({
-		src: url
-	})
+	hideContentElements()
+	loadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
+	loadingLabel.show()
+	image.setAttributes({ src: url })
 }
 
 function addHeaderButton(text: String, callback: Function) {
@@ -33,7 +41,8 @@ function toggleFullscreen() {
 }
 
 function showHelpText() {
-	elementSelector.showElement(helpText)
+	hideContentElements()
+	helpText.show()
 }
 
 function updateSize() {
@@ -47,8 +56,6 @@ function updateSize() {
 
 
 // Setup
-
-let elementSelector = new VisibleElementSelector()
 
 let settings = {
 	margin: .3,
@@ -106,7 +113,10 @@ addHeaderButton("Quest Items", () => { window.open("https://gamepedia.cursecdn.c
 
 addHeaderButton("Hideout Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/3/39/Hideout-Requirements-Items-to-Keep.jpg") })
 
-addHeaderButton("S.History", () => { elementSelector.showElement(searchHistory) })
+addHeaderButton("S.History", () => {
+	hideContentElements()
+	searchHistory.show()
+})
 
 let googleInput = new UIElement(ElementType.INPUT, headerDiv)
 googleInput.setAttributes({
@@ -126,17 +136,13 @@ googleInput.element.addEventListener("keypress", (event) => {
 
 // Content
 
+let contentElements: UIElement[] = []
+
 let contentDiv = new UIElement(ElementType.DIV)
 contentDiv.setStyle({
 	"margin-top": `${settings.margin}em`,
 	"margin-bottom": `${settings.margin}em`
 })
-
-function addContentElement(type: ElementType): UIElement {
-	let element = new UIElement(type, contentDiv)
-	element.setStyle({ position: "absolute" })
-	return element
-}
 
 let helpText = addContentElement(ElementType.H4)
 helpText.setStyle({
@@ -147,7 +153,6 @@ helpText.setStyle({
 helpText.setAttributes({
 	"innerHTML": "<a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Maps</a>"
 })
-elementSelector.addElement(helpText)
 
 let loadingLabel = addContentElement(ElementType.H4)
 loadingLabel.setStyle({
@@ -157,7 +162,6 @@ loadingLabel.setStyle({
 	width: "100%",
 	color: "white"
 })
-elementSelector.addElement(loadingLabel)
 
 let image = addContentElement(ElementType.IMAGE)
 image.setAttributes({
@@ -169,15 +173,14 @@ image.setStyle({
 	transition: "opacity .5s linear"
 })
 image.element.addEventListener("load", () => {
-	elementSelector.showElement(image)
+	image.show()
+	loadingLabel.hide()
 })
-elementSelector.addElement(image)
 
 let searchHistory = new SearchHistory(contentDiv)
 searchHistory.setStyle({
 	"margin": `${settings.margin}em`
 })
-elementSelector.addElement(searchHistory)
 
 
 // Key press
