@@ -2,6 +2,7 @@ import { ImageOption } from "./ImageOption"
 import { UIElement, ElementType } from "./UIElement"
 import { SearchHistory } from "./SearchHistory"
 import { HelpTextBuilder } from "./HelpTextBuilder"
+import { LocalStorageData } from "./LocalStorageData"
 
 function hideContentElements() {
 	for (let index in contentElements) {
@@ -11,7 +12,7 @@ function hideContentElements() {
 
 function addContentElement(type: ElementType): UIElement {
 	let element = new UIElement(type, contentDiv)
-	element.setStyle({ position: "absolute" })
+	element.setStyle({ position: "absolute", opacity: 0 })
 	contentElements.push(element)
 	return element
 }
@@ -21,6 +22,8 @@ function setImage(url: string) {
 	loadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
 	loadingLabel.show()
 	image.setAttributes({ src: url })
+	localStorageData.imageUrl = url
+	saveLocal()
 }
 
 function addHeaderButton(text: String, callback: Function) {
@@ -55,8 +58,15 @@ function updateSize() {
 	})
 }
 
+function saveLocal() {
+	let data = JSON.stringify(localStorageData)
+	localStorage.setItem(localStorageItemName, data)
+}
+
 
 // Setup
+
+let localStorageItemName = "eft-dash"
 
 let settings = {
 	margin: .3,
@@ -72,6 +82,9 @@ let imageOptions = [
 	new ImageOption("Resort, Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg"),
 	new ImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png")
 ]
+
+let localStorageData = new LocalStorageData()
+localStorageData.imageUrl = imageOptions[0].url
 
 UIElement.setStyle(document.body, {
 	"margin": "0",
@@ -216,8 +229,6 @@ window.addEventListener("keyup", (event) => {
 	}
 })
 
-setImage(imageOptions[0].url)
-
 let resizeTimeout: number
 window.addEventListener("resize", () => {
 	clearTimeout(resizeTimeout)
@@ -226,3 +237,13 @@ window.addEventListener("resize", () => {
 	}, 100)
 })
 updateSize()
+
+
+// Load
+
+let data = localStorage.getItem("eft-dash")
+if (data != null) {
+	localStorageData = JSON.parse(data)
+}
+
+setImage(localStorageData.imageUrl)
