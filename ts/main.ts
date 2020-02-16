@@ -4,10 +4,11 @@ import { VisibleElementSelector } from "./VisibleElementSelector"
 import { SearchHistory } from "./SearchHistory"
 
 function setImage(url: string) {
+	elementSelector.showElement(loadingLabel)
+	loadingLabel.setAttributes({ innerHTML: `LOADING ${url}` })
 	image.setAttributes({
 		src: url
 	})
-	elementSelector.showElement(image)
 }
 
 function addHeaderButton(text: String, callback: Function) {
@@ -139,13 +140,25 @@ helpText.setAttributes({
 })
 elementSelector.addElement(helpText)
 
+let loadingLabel = new UIElement(ElementType.H4, contentDiv)
+loadingLabel.setStyle({
+	position: "absolute",
+	top: "50%",
+	"text-align": "center",
+	width: "100%",
+	color: "white"
+})
+elementSelector.addElement(loadingLabel)
+
 let image = new UIElement(ElementType.IMAGE, contentDiv)
 image.setStyle({
 	"width": "100%",
 	"object-fit": "contain"
 })
+image.element.addEventListener("load", () => {
+	elementSelector.showElement(image)
+})
 elementSelector.addElement(image)
-
 
 let searchHistory = new SearchHistory(contentDiv)
 searchHistory.setStyle({
