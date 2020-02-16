@@ -10,7 +10,7 @@ function hideContentElements() {
 	}
 }
 
-function addContentElement(element: UIElement) {
+function addContentElement(element: UIElement): UIElement {
 	contentDiv.element.appendChild(element.element)
 	element.setStyle({ position: "absolute", opacity: 0 })
 	contentElements.push(element)
@@ -64,6 +64,7 @@ function saveLocal() {
 }
 
 
+
 // Setup
 
 let localStorageItemName = "eft-dash"
@@ -95,6 +96,7 @@ UIElement.setStyle(document.body, {
 let loadingHeaderElement = document.getElementById("loading_header")
 let loadingHeader = new UIElement(loadingHeaderElement)
 setTimeout(() => { loadingHeader.hide() }, 10)
+
 
 
 // Header
@@ -149,6 +151,7 @@ googleInput.element.addEventListener("keypress", (event) => {
 })
 
 
+
 // Content
 
 let contentElements: UIElement[] = []
@@ -192,10 +195,12 @@ image.element.addEventListener("load", () => {
 	loadingLabel.hide()
 })
 
-let searchHistory = addContentElement(new SearchHistory(contentDiv))
+let searchHistory = new SearchHistory(contentDiv)
+addContentElement(searchHistory)
 searchHistory.setStyle({
 	"margin": `${settings.margin}em`
 })
+
 
 
 // Key press
@@ -238,6 +243,7 @@ window.addEventListener("resize", () => {
 	}, 100)
 })
 updateSize()
+
 
 
 // Load

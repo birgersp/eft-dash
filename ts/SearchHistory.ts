@@ -19,6 +19,7 @@ export class SearchHistory extends UIElement {
 	constructor(parent?: UIElement) {
 		super(ElementType.DIV, parent)
 		this.loadSearches()
+		this.rePopulate()
 	}
 
 	addSearchAndSave(label: string, url: string) {
@@ -55,6 +56,8 @@ export class SearchHistory extends UIElement {
 
 	private rePopulate() {
 		this.removeChildren()
+		let header = new UIElement(ElementType.H4, this)
+		header.setAttributes({ innerHTML: "Search history" })
 		for (let i in this.searches) {
 			let search = this.searches[i]
 			let link = new UIElement(ElementType.LINK, this)
