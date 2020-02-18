@@ -3,7 +3,6 @@ import { UIElement, ElementType } from "./UIElement"
 export class HideableUIElement extends UIElement {
 
 	private opacity = 1
-	private displayType = ""
 
 	constructor(specifier: ElementType | HTMLElement) {
 		super(specifier)
@@ -13,7 +12,7 @@ export class HideableUIElement extends UIElement {
 			if (opacityString != "") {
 				let opacity = parseFloat(opacityString)
 				if (opacity <= 0) {
-					this.setStyle({ display: "none" })
+					this.setStyle({ visibility: "hidden" })
 				}
 			}
 		})
@@ -22,16 +21,11 @@ export class HideableUIElement extends UIElement {
 	hide() {
 		this.opacity = 0
 		this.setStyle({ opacity: this.opacity })
-		if (this.displayType == "") {
-			this.displayType = getComputedStyle(this.element, null).display
-		}
 	}
 
 	show() {
 		this.opacity = 1
-		if (this.displayType != "") {
-			this.setStyle({ display: this.displayType, opacity: this.opacity })
-		}
+		this.setStyle({ opacity: this.opacity, visibility: "visible" })
 	}
 
 	setTransition(seconds: number) {

@@ -9,11 +9,12 @@ function hideContentElements() {
 	for (let index in contentElements) {
 		contentElements[index].hide()
 	}
+	imageLoadingLabel.setStyle({ visibility: "hidden" })
 }
 
 function addContentElement(element: HideableUIElement): HideableUIElement {
 	contentDiv.element.appendChild(element.element)
-	element.setStyle({ position: "absolute", opacity: 0 })
+	element.setStyle({ position: "absolute", visibility: "hidden" })
 	contentElements.push(element)
 	return element
 }
@@ -22,8 +23,8 @@ function setImage(index: number) {
 	let option = imageOptions[index]
 	let url = option.url
 	hideContentElements()
-	loadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
-	loadingLabel.show()
+	imageLoadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
+	imageLoadingLabel.show()
 	let image = option.image
 	image.setAttributes({ src: url })
 	localStorageData.imageIndex = index
@@ -103,12 +104,6 @@ let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
 let contentDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
 let contentElements: HideableUIElement[] = []
 
-UIElement.setStyle(document.body, {
-	"margin": "0",
-	"background": "#17202A",
-	"overflow-y": "hidden"
-})
-
 let loadingHeaderElement = document.getElementById("loading_header")
 let loadingHeader = new HideableUIElement(loadingHeaderElement)
 setTimeout(() => { loadingHeader.hide() }, 10)
@@ -143,7 +138,6 @@ for (let index in imageOptions) {
 	})
 	image.element.addEventListener("load", () => {
 		image.show()
-		loadingLabel.hide()
 	})
 	addContentElement(image)
 }
@@ -190,13 +184,14 @@ helpTextBuilder
 	.addParagraph("by <a href=\"https://github.com/birgersp\">birgersp</a>")
 	.addParagraph("Huge thanks to <a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Marvelin for creating these awesome maps</a>")
 
-let loadingLabel = addContentElement(new HideableUIElement(ElementType.H4))
-loadingLabel.setStyle({
+let imageLoadingLabel = addContentElement(new HideableUIElement(ElementType.H4))
+imageLoadingLabel.setStyle({
 	position: "absolute",
 	top: "50%",
 	"text-align": "center",
 	width: "100%",
-	color: "white"
+	color: "white",
+	"z-index": -1
 })
 
 let searchHistory = new SearchHistory()
