@@ -32,7 +32,7 @@ export class UIElement {
 			this.element = document.createElement(specifier)
 		else
 			this.element = specifier
-		this.setTransition(0.2)
+		this.setTransition(0.5)
 		this.element.addEventListener("transitionend", () => {
 			let opacityString = this.element.style.getPropertyValue("opacity")
 			if (opacityString != "") {

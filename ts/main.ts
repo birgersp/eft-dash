@@ -201,8 +201,7 @@ loadingLabel.setStyle({
 let searchHistory = new SearchHistory()
 addContentElement(searchHistory)
 searchHistory.setStyle({
-	"margin": `${settings.margin}em`,
-	"margin-left": `1em`
+	"padding-left": `${settings.margin}em`
 })
 
 
