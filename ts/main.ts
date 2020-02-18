@@ -85,8 +85,12 @@ let imageOptions = [
 	new ImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png")
 ]
 
-let localStorageData = new LocalStorageData()
-localStorageData.imageIndex = 0
+
+// Main UI elements
+
+let headerDiv = new UIElement(ElementType.DIV)
+let contentDiv = new UIElement(ElementType.DIV)
+let contentElements: UIElement[] = []
 
 UIElement.setStyle(document.body, {
 	"margin": "0",
@@ -101,8 +105,6 @@ setTimeout(() => { loadingHeader.hide() }, 10)
 
 
 // Header
-
-let headerDiv = new UIElement(ElementType.DIV)
 
 addHeaderButton("(h)Help", () => {
 	showHelpText()
@@ -155,9 +157,6 @@ googleInput.element.addEventListener("keypress", (event) => {
 
 // Content
 
-let contentElements: UIElement[] = []
-
-let contentDiv = new UIElement(ElementType.DIV)
 contentDiv.setStyle({
 	"margin-top": `${settings.margin}em`,
 	"margin-bottom": `${settings.margin}em`
@@ -246,9 +245,12 @@ updateSize()
 
 
 
-// Load
+// Local storage
 
-let data = localStorage.getItem("eft-dash")
+let localStorageData = new LocalStorageData()
+localStorageData.imageIndex = 0
+
+let data = localStorage.getItem(localStorageItemName)
 if (data != null) {
 	localStorageData = JSON.parse(data)
 }
