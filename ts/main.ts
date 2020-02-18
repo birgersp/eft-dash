@@ -18,10 +18,12 @@ function addContentElement(element: UIElement): UIElement {
 }
 
 function setImage(index: number) {
-	let url = imageOptions[index].url
+	let option = imageOptions[index]
+	let url = option.url
 	hideContentElements()
 	loadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
 	loadingLabel.show()
+	let image = option.image
 	image.setAttributes({ src: url })
 	localStorageData.imageIndex = index
 	saveLocal()
@@ -54,8 +56,10 @@ function updateSize() {
 	let contentSize = window.innerHeight
 	let headerSize = headerDiv.element.clientHeight
 	let imageHeight = contentSize - headerSize
-	image.setStyle({
-		"height": `calc(${imageHeight}px - ${settings.margin * 2}em)`
+	imageOptions.forEach(option => {
+		option.image.setStyle({
+			"height": `calc(${imageHeight}px - ${settings.margin * 2}em)`
+		})
 	})
 }
 
@@ -84,6 +88,7 @@ let imageOptions = [
 	new ImageOption("Resort, Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg"),
 	new ImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png")
 ]
+
 
 
 // Main UI elements
@@ -125,6 +130,16 @@ for (let index in imageOptions) {
 	addHeaderButton(buttonText, () => {
 		setImage(indexInt)
 	})
+	let image = option.image
+	image.setStyle({
+		"width": "100%",
+		"object-fit": "contain"
+	})
+	image.element.addEventListener("load", () => {
+		image.show()
+		loadingLabel.hide()
+	})
+	addContentElement(image)
 }
 
 addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
@@ -179,19 +194,6 @@ loadingLabel.setStyle({
 	"text-align": "center",
 	width: "100%",
 	color: "white"
-})
-
-let image = addContentElement(new UIElement(ElementType.IMAGE))
-image.setAttributes({
-	id: "image"
-})
-image.setStyle({
-	"width": "100%",
-	"object-fit": "contain"
-})
-image.element.addEventListener("load", () => {
-	image.show()
-	loadingLabel.hide()
 })
 
 let searchHistory = new SearchHistory()
