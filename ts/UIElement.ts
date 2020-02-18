@@ -25,23 +25,12 @@ export class UIElement {
 	}
 
 	readonly element: HTMLElement
-	private opacity = 1
 
 	constructor(specifier: ElementType | HTMLElement) {
 		if (typeof specifier == "string")
 			this.element = document.createElement(specifier)
 		else
 			this.element = specifier
-		this.setTransition(0.5)
-		this.element.addEventListener("transitionend", () => {
-			let opacityString = this.element.style.getPropertyValue("opacity")
-			if (opacityString != "") {
-				let opacity = parseFloat(opacityString)
-				if (opacity <= 0) {
-					this.setStyle({ display: "none" })
-				}
-			}
-		})
 	}
 
 	setStyle(styleProperties: Object) {
@@ -59,23 +48,9 @@ export class UIElement {
 		}
 	}
 
-	hide() {
-		this.opacity = 0
-		this.setStyle({ opacity: this.opacity })
-	}
-
-	show() {
-		this.opacity = 1
-		this.setStyle({ display: "block", opacity: this.opacity })
-	}
-
 	removeChildren() {
 		while (this.element.firstChild)
 			this.element.removeChild(this.element.firstChild)
-	}
-
-	setTransition(seconds: number) {
-		this.setStyle({ transition: `opacity ${seconds}s linear` })
 	}
 
 	addChild(element: UIElement) {

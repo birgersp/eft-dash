@@ -1,4 +1,5 @@
 import { UIElement, ElementType } from "./UIElement"
+import { HideableUIElement } from "./HideableUIElement"
 
 class Search {
 
@@ -11,7 +12,7 @@ class Search {
 	}
 }
 
-export class SearchHistory extends UIElement {
+export class SearchHistory extends HideableUIElement {
 
 	private searches: Search[] = []
 	private static readonly LOCAL_STORAGE_KEY = "eft-dash-searches"

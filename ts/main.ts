@@ -3,6 +3,7 @@ import { UIElement, ElementType } from "./UIElement"
 import { SearchHistory } from "./SearchHistory"
 import { HelpTextBuilder } from "./HelpTextBuilder"
 import { LocalStorageData } from "./LocalStorageData"
+import { HideableUIElement } from "./HideableUIElement"
 
 function hideContentElements() {
 	for (let index in contentElements) {
@@ -10,7 +11,7 @@ function hideContentElements() {
 	}
 }
 
-function addContentElement(element: UIElement): UIElement {
+function addContentElement(element: HideableUIElement): HideableUIElement {
 	contentDiv.element.appendChild(element.element)
 	element.setStyle({ position: "absolute", opacity: 0 })
 	contentElements.push(element)
@@ -100,7 +101,7 @@ let imageOptions = [
 
 let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
 let contentDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
-let contentElements: UIElement[] = []
+let contentElements: HideableUIElement[] = []
 
 UIElement.setStyle(document.body, {
 	"margin": "0",
@@ -109,7 +110,7 @@ UIElement.setStyle(document.body, {
 })
 
 let loadingHeaderElement = document.getElementById("loading_header")
-let loadingHeader = new UIElement(loadingHeaderElement)
+let loadingHeader = new HideableUIElement(loadingHeaderElement)
 setTimeout(() => { loadingHeader.hide() }, 10)
 
 
@@ -179,7 +180,7 @@ contentDiv.setStyle({
 	"margin-bottom": `${settings.margin}em`
 })
 
-let helpTextContainer = addContentElement(new UIElement(ElementType.DIV))
+let helpTextContainer = addContentElement(new HideableUIElement(ElementType.DIV))
 helpTextContainer.setStyle({
 	"padding-left": `${settings.margin}em`
 })
@@ -189,7 +190,7 @@ helpTextBuilder
 	.addParagraph("by <a href=\"https://github.com/birgersp\">birgersp</a>")
 	.addParagraph("Huge thanks to <a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Marvelin for creating these awesome maps</a>")
 
-let loadingLabel = addContentElement(new UIElement(ElementType.H4))
+let loadingLabel = addContentElement(new HideableUIElement(ElementType.H4))
 loadingLabel.setStyle({
 	position: "absolute",
 	top: "50%",
