@@ -73,5 +73,28 @@ export class SearchHistory extends UIElement {
 			})
 			this.createChild(ElementType.LINE_BREAK)
 		}
+		if (this.searches.length == 0) {
+			let paragraph = this.createChild(ElementType.PARAGRAPH)
+			paragraph.setInnerHTML("(Search history is empty)")
+		} else {
+			let link = this.createChild(ElementType.LINK)
+			link.setAttributes({
+				"href": "javascript:void(0);",
+				"innerHTML": "(Clear search history)"
+			})
+			link.setStyle({
+				"color": "white"
+			})
+			link.element.addEventListener("click", () => {
+				this.clearSearches()
+			})
+			this.createChild(ElementType.LINE_BREAK)
+		}
+	}
+
+	private clearSearches() {
+		this.searches = []
+		this.saveSearches()
+		this.rePopulate()
 	}
 }

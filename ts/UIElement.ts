@@ -87,4 +87,8 @@ export class UIElement {
 		this.addChild(child)
 		return child
 	}
+
+	setInnerHTML(string: string) {
+		this.setAttributes({ innerHTML: string })
+	}
 }

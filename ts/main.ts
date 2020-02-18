@@ -68,6 +68,11 @@ function saveLocal() {
 	localStorage.setItem(localStorageItemName, data)
 }
 
+function showSearchHistory() {
+	hideContentElements()
+	searchHistory.show()
+}
+
 
 
 // Setup
@@ -148,10 +153,7 @@ addHeaderButton("Quest Items", () => { window.open("https://gamepedia.cursecdn.c
 
 addHeaderButton("Hideout Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/3/39/Hideout-Requirements-Items-to-Keep.jpg") })
 
-addHeaderButton("S.History", () => {
-	hideContentElements()
-	searchHistory.show()
-})
+addHeaderButton("S.History", showSearchHistory)
 
 let googleInput = headerDiv.createChild(ElementType.INPUT)
 googleInput.setAttributes({
@@ -199,7 +201,8 @@ loadingLabel.setStyle({
 let searchHistory = new SearchHistory()
 addContentElement(searchHistory)
 searchHistory.setStyle({
-	"margin": `${settings.margin}em`
+	"margin": `${settings.margin}em`,
+	"margin-left": `1em`
 })
 
 
