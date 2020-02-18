@@ -75,6 +75,38 @@ function showSearchHistory() {
 	searchHistory.show()
 }
 
+function addImageOption(label: string, url: string, hotkey?: string) {
+	let index = imageOptions.length
+	let buttonText = ""
+	if (hotkey != null) {
+		buttonText += `(${hotkey})`
+		keyActions[hotkey] = () => {
+			setImage(index)
+		}
+	}
+	buttonText += label
+	addHeaderButton(buttonText, () => { setImage(index) })
+	let option = new ImageOption(label, url)
+	imageOptions.push(option)
+	let image = option.image
+	image.setStyle({
+		"width": "100%",
+		"object-fit": "contain"
+	})
+	image.element.addEventListener("load", () => {
+		image.show()
+	})
+	addContentElement(image)
+}
+
+
+
+// Main UI elements
+
+let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
+let contentDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
+let contentElements: HideableUIElement[] = []
+
 
 
 // Setup
@@ -86,27 +118,12 @@ let settings = {
 	fullscreen: false
 }
 
-let imageOptions = [
-	new ImageOption("Customs", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/customs_marvelin1_5.jpg.139c43aa06da1ad715636913d1a5e9e3.jpg"),
-	new ImageOption("Woods", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/woods_marvelin.jpg.d4692fbf57cdfd608671b16f8caf89ae.jpg"),
-	new ImageOption("Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/shoreline_marvelin_2_2.jpg.496b8c902f7b88b12d474fd3107ce578.jpg"),
-	new ImageOption("Factory", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Factory_marvelin1_2.jpg.0c4c03b58ecfff4b1fe15afef5291e97.jpg"),
-	new ImageOption("Dorms, Customs", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg"),
-	new ImageOption("Resort, Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg"),
-	new ImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png")
-]
-
-
-
-// Main UI elements
-
-let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
-let contentDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
-let contentElements: HideableUIElement[] = []
-
 let loadingHeaderElement = document.getElementById("loading_header")
 let loadingHeader = new HideableUIElement(loadingHeaderElement)
 setTimeout(() => { loadingHeader.hide() }, 10)
+
+let imageOptions = []
+let keyActions: Record<string, () => void> = {}
 
 
 
@@ -120,34 +137,18 @@ addHeaderButton("(f)Fullscreen", () => {
 	toggleFullscreen()
 })
 
-for (let index in imageOptions) {
-	let indexInt = parseInt(index)
-	let option = imageOptions[indexInt]
-	let buttonText = ""
-	if ((indexInt + 1) <= 9) {
-		buttonText += `(${indexInt + 1})`
-	}
-	buttonText += option.label
-	addHeaderButton(buttonText, () => {
-		setImage(indexInt)
-	})
-	let image = option.image
-	image.setStyle({
-		"width": "100%",
-		"object-fit": "contain"
-	})
-	image.element.addEventListener("load", () => {
-		image.show()
-	})
-	addContentElement(image)
-}
+addImageOption("Customs", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/customs_marvelin1_5.jpg.139c43aa06da1ad715636913d1a5e9e3.jpg", "1")
+addImageOption("Woods", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/woods_marvelin.jpg.d4692fbf57cdfd608671b16f8caf89ae.jpg", "2")
+addImageOption("Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/shoreline_marvelin_2_2.jpg.496b8c902f7b88b12d474fd3107ce578.jpg", "3")
+addImageOption("Factory", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Factory_marvelin1_2.jpg.0c4c03b58ecfff4b1fe15afef5291e97.jpg", "4")
+addImageOption("Dorms, Customs", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg", "5")
+addImageOption("Resort, Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg", "6")
+addImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png", "7")
+addImageOption("Keys", "https://i.imgur.com/WI3Qg2G.jpg", "k")
 
 addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
-
 addHeaderButton("Quest Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/1/19/QuestItemRequirements.png") })
-
 addHeaderButton("Hideout Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/3/39/Hideout-Requirements-Items-to-Keep.jpg") })
-
 addHeaderButton("S.History", showSearchHistory)
 
 let googleInput = headerDiv.createChild(ElementType.INPUT)
@@ -204,14 +205,12 @@ searchHistory.setStyle({
 
 // Key press
 
-let keyActions: Record<string, () => void> = {
-	"f": toggleFullscreen,
-	"s": () => {
-		(googleInput.element as HTMLInputElement).select()
-		googleInput.element.focus()
-	},
-	"h": showHelpText
+keyActions["f"] = toggleFullscreen
+keyActions["s"] = () => {
+	(googleInput.element as HTMLInputElement).select()
+	googleInput.element.focus()
 }
+keyActions["h"] = showHelpText
 
 window.addEventListener("keyup", (event) => {
 	let key = event.key
@@ -226,11 +225,6 @@ window.addEventListener("keyup", (event) => {
 	let keyAction = keyActions[key]
 	if (keyAction != null) {
 		keyAction()
-	} else {
-		let index = parseInt(key) - 1
-		if (imageOptions[index]) {
-			setImage(index)
-		}
 	}
 })
 
