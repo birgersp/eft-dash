@@ -11,6 +11,12 @@ export enum ElementType {
 
 export class UIElement {
 
+	static createHTMLBodyChild(type: ElementType): UIElement {
+		let child = new UIElement(type)
+		document.body.appendChild(child.element)
+		return child
+	}
+
 	static setStyle(element: HTMLElement, properties: Object) {
 		for (let key in properties) {
 			let value = properties[key]
@@ -21,15 +27,11 @@ export class UIElement {
 	readonly element: HTMLElement
 	private opacity = 1
 
-	constructor(specifier: ElementType | HTMLElement, parent?: UIElement) {
+	constructor(specifier: ElementType | HTMLElement) {
 		if (typeof specifier == "string")
 			this.element = document.createElement(specifier)
 		else
 			this.element = specifier
-		if (parent)
-			parent.addChild(this)
-		else
-			document.body.appendChild(this.element)
 		this.setTransition(0.2)
 		this.element.addEventListener("transitionend", () => {
 			let opacityString = this.element.style.getPropertyValue("opacity")
@@ -78,5 +80,11 @@ export class UIElement {
 
 	addChild(element: UIElement) {
 		this.element.appendChild(element.element)
+	}
+
+	createChild(type: ElementType): UIElement {
+		let child = new UIElement(type)
+		this.addChild(child)
+		return child
 	}
 }

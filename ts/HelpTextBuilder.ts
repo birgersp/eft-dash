@@ -10,14 +10,14 @@ export class HelpTextBuilder {
 
 	addH4(text: string): HelpTextBuilder {
 
-		let h4 = new UIElement(ElementType.H4, this.container)
+		let h4 = this.container.createChild(ElementType.H4)
 		h4.setAttributes({ innerHTML: text })
 		return this
 	}
 
 	addParagraph(text: string) {
 
-		let paragraph = new UIElement(ElementType.PARAGRAPH, this.container)
+		let paragraph = this.container.createChild(ElementType.PARAGRAPH)
 		paragraph.setAttributes({ innerHTML: text })
 		return this
 	}

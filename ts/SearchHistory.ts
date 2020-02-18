@@ -16,8 +16,8 @@ export class SearchHistory extends UIElement {
 	private searches: Search[] = []
 	private static readonly LOCAL_STORAGE_KEY = "eft-dash-searches"
 
-	constructor(parent?: UIElement) {
-		super(ElementType.DIV, parent)
+	constructor() {
+		super(ElementType.DIV)
 		this.loadSearches()
 		this.rePopulate()
 	}
@@ -56,11 +56,11 @@ export class SearchHistory extends UIElement {
 
 	private rePopulate() {
 		this.removeChildren()
-		let header = new UIElement(ElementType.H4, this)
+		let header = this.createChild(ElementType.H4)
 		header.setAttributes({ innerHTML: "Search history" })
 		for (let i in this.searches) {
 			let search = this.searches[i]
-			let link = new UIElement(ElementType.LINK, this)
+			let link = this.createChild(ElementType.LINK)
 			link.setAttributes({
 				"href": "javascript:void(0);",
 				"innerHTML": search.label
@@ -71,7 +71,7 @@ export class SearchHistory extends UIElement {
 			link.element.addEventListener("click", () => {
 				window.open(search.url)
 			})
-			new UIElement(ElementType.LINE_BREAK, this)
+			this.createChild(ElementType.LINE_BREAK)
 		}
 	}
 }

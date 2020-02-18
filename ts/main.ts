@@ -28,7 +28,7 @@ function setImage(index: number) {
 }
 
 function addHeaderButton(text: String, callback: Function) {
-	let button = new UIElement(ElementType.BUTTON, headerDiv)
+	let button = headerDiv.createChild(ElementType.BUTTON)
 	button.setAttributes({
 		"innerHTML": text
 	})
@@ -88,8 +88,8 @@ let imageOptions = [
 
 // Main UI elements
 
-let headerDiv = new UIElement(ElementType.DIV)
-let contentDiv = new UIElement(ElementType.DIV)
+let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
+let contentDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
 let contentElements: UIElement[] = []
 
 UIElement.setStyle(document.body, {
@@ -138,7 +138,7 @@ addHeaderButton("S.History", () => {
 	searchHistory.show()
 })
 
-let googleInput = new UIElement(ElementType.INPUT, headerDiv)
+let googleInput = headerDiv.createChild(ElementType.INPUT)
 googleInput.setAttributes({
 	"placeholder": "(s)Search..."
 })
@@ -194,7 +194,7 @@ image.element.addEventListener("load", () => {
 	loadingLabel.hide()
 })
 
-let searchHistory = new SearchHistory(contentDiv)
+let searchHistory = new SearchHistory()
 addContentElement(searchHistory)
 searchHistory.setStyle({
 	"margin": `${settings.margin}em`
