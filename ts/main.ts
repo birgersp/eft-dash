@@ -145,6 +145,7 @@ addImageOption("Dorms, Customs", "https://forum.escapefromtarkov.com/uploads/mon
 addImageOption("Resort, Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg", "6")
 addImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png", "7")
 addImageOption("Keys", "https://i.imgur.com/WI3Qg2G.jpg", "k")
+addImageOption("Items", "https://i.redd.it/bu31y4cnikh41.png", "i")
 
 addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
 addHeaderButton("Quest Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/1/19/QuestItemRequirements.png") })
