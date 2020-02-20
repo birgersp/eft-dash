@@ -245,9 +245,23 @@ updateSize()
 let localStorageData = new LocalStorageData()
 localStorageData.imageIndex = 0
 
-let data = localStorage.getItem(localStorageItemName)
-if (data != null) {
-	localStorageData = JSON.parse(data)
+let locationHashHasIndex = false
+if (location.hash != "") {
+	try {
+		let string = location.hash.replace("#", "")
+		let integer = parseInt(string) - 1
+		if ((integer > 0) && (integer < imageOptions.length)) {
+			locationHashHasIndex = true
+			setImage(integer)
+		}
+	} catch (exception) {
+	}
 }
 
-setImage(localStorageData.imageIndex)
+if (locationHashHasIndex == false) {
+	let data = localStorage.getItem(localStorageItemName)
+	if (data != null) {
+		localStorageData = JSON.parse(data)
+	}
+	setImage(localStorageData.imageIndex)
+}
