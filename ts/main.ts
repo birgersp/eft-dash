@@ -80,9 +80,9 @@ function addImageOption(label: string, url: string, hotkey?: string) {
 	let buttonText = ""
 	if (hotkey != null) {
 		buttonText += `(${hotkey})`
-		keyActions[hotkey] = () => {
+		setHotkey(hotkey, () => {
 			setImage(index)
-		}
+		})
 	}
 	buttonText += label
 	addHeaderButton(buttonText, () => { setImage(index) })
@@ -97,6 +97,13 @@ function addImageOption(label: string, url: string, hotkey?: string) {
 		image.show()
 	})
 	addContentElement(image)
+}
+
+function setHotkey(key: string, func: () => void) {
+	if (keyActions[key] != null) {
+		throw new Error(`Key ${key} is already mapped as a hotkey`)
+	}
+	keyActions[key] = func
 }
 
 
@@ -206,14 +213,14 @@ searchHistory.setStyle({
 
 // Key press
 
-keyActions["f"] = toggleFullscreen
-keyActions["s"] = () => {
+setHotkey("f", toggleFullscreen)
+setHotkey("s", () => {
 	(googleInput.element as HTMLInputElement).select()
 	googleInput.element.focus()
-}
-keyActions["h"] = showHelpText
+})
+setHotkey("h", showHelpText)
 
-window.addEventListener("keyup", (event) => {
+window.addEventListener("keyup", event => {
 	let key = event.key
 	if (key == "Escape") {
 		googleInput.element.blur()
