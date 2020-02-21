@@ -220,8 +220,19 @@ setHotkey("s", () => {
 })
 setHotkey("h", showHelpText)
 
+window.addEventListener("keydown", event => {
+	let key = event.key
+	if (key == "Tab") {
+		googleInput.element.blur()
+	}
+})
+
 window.addEventListener("keyup", event => {
 	let key = event.key
+	if (key == "Tab") {
+		(document.activeElement as HTMLElement).blur()
+		return
+	}
 	if (key == "Escape") {
 		googleInput.element.blur()
 		return
