@@ -6,7 +6,8 @@ export enum ElementType {
 	H4 = "h4",
 	LINK = "a",
 	LINE_BREAK = "br",
-	PARAGRAPH = "p"
+	PARAGRAPH = "p",
+	SPAN = "span"
 }
 
 export class UIElement {

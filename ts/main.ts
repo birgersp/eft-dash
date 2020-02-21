@@ -23,8 +23,10 @@ function setImage(index: number) {
 	let option = imageOptions[index]
 	let url = option.url
 	hideContentElements()
-	imageLoadingLabel.setAttributes({ innerHTML: `Loading<br>${url}` })
+	imageLoadingLabel.setInnerHTML(`Loading<br>${url}`)
 	imageLoadingLabel.show()
+	imageCreditLabel.setInnerHTML(option.credit)
+	imageCreditLabel.show()
 	let image = option.image
 	image.setAttributes({ src: url })
 	localStorageData.imageIndex = index
@@ -60,7 +62,7 @@ function updateSize() {
 	let imageHeight = contentSize - headerSize
 	imageOptions.forEach(option => {
 		option.image.setStyle({
-			"height": `calc(${imageHeight}px - ${settings.margin * 2}em)`
+			"height": `calc(${imageHeight}px - ${settings.margin * 6}em)`
 		})
 	})
 }
@@ -75,7 +77,7 @@ function showSearchHistory() {
 	searchHistory.show()
 }
 
-function addImageOption(label: string, url: string, hotkey?: string) {
+function addImageOption(label: string, url: string, authorName: string, sourceLink: string, hotkey?: string) {
 	let index = imageOptions.length
 	let buttonText = ""
 	if (hotkey != null) {
@@ -86,7 +88,8 @@ function addImageOption(label: string, url: string, hotkey?: string) {
 	}
 	buttonText += label
 	addHeaderButton(buttonText, () => { setImage(index) })
-	let option = new ImageOption(label, url)
+	let creditString = `image by ${authorName} (<a href="${sourceLink}">link</a>)`
+	let option = new ImageOption(label, url, creditString)
 	imageOptions.push(option)
 	let image = option.image
 	image.setStyle({
@@ -136,7 +139,7 @@ let keyActions: Record<string, () => void> = {}
 
 // Header
 
-addHeaderButton("(h)Help", () => {
+addHeaderButton("Help", () => {
 	showHelpText()
 })
 
@@ -144,19 +147,79 @@ addHeaderButton("(f)Fullscreen", () => {
 	toggleFullscreen()
 })
 
-addImageOption("Customs", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/customs_marvelin1_5.jpg.139c43aa06da1ad715636913d1a5e9e3.jpg", "1")
-addImageOption("Woods", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/woods_marvelin.jpg.d4692fbf57cdfd608671b16f8caf89ae.jpg", "2")
-addImageOption("Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/shoreline_marvelin_2_2.jpg.496b8c902f7b88b12d474fd3107ce578.jpg", "3")
-addImageOption("Factory", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Factory_marvelin1_2.jpg.0c4c03b58ecfff4b1fe15afef5291e97.jpg", "4")
-addImageOption("Dorms, Customs", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg", "5")
-addImageOption("Resort, Shoreline", "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg", "6")
-addImageOption("Interchange", "https://i.redd.it/bqftzweimvx31.png", "7")
-addImageOption("Keys", "https://i.imgur.com/WI3Qg2G.jpg", "k")
-addImageOption("Items", "https://i.redd.it/bu31y4cnikh41.png", "i")
+addImageOption(
+	"Customs",
+	"https://forum.escapefromtarkov.com/uploads/monthly_2019_01/customs_marvelin1_5.jpg.139c43aa06da1ad715636913d1a5e9e3.jpg",
+	"Marvelin",
+	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"1"
+)
+addImageOption(
+	"Woods",
+	"https://forum.escapefromtarkov.com/uploads/monthly_2018_02/woods_marvelin.jpg.d4692fbf57cdfd608671b16f8caf89ae.jpg",
+	"Marvelin",
+	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"2"
+)
+addImageOption(
+	"Shoreline",
+	"https://forum.escapefromtarkov.com/uploads/monthly_2019_01/shoreline_marvelin_2_2.jpg.496b8c902f7b88b12d474fd3107ce578.jpg",
+	"Marvelin",
+	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"3"
+)
+addImageOption(
+	"Factory",
+	"https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Factory_marvelin1_2.jpg.0c4c03b58ecfff4b1fe15afef5291e97.jpg",
+	"Marvelin",
+	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"4"
+)
+addImageOption(
+	"Dorms, Customs",
+	"https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg",
+	"Marvelin",
+	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"5"
+)
+addImageOption(
+	"Resort, Shoreline",
+	"https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg",
+	"Marvelin",
+	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"6"
+)
+addImageOption(
+	"Interchange",
+	"https://i.redd.it/bqftzweimvx31.png",
+	"u/Lorathor6",
+	"https://www.reddit.com/r/EscapefromTarkov/comments/8gixyg/interchange_map_incl_loot_and_keys",
+	"7"
+)
+addImageOption(
+	"Keys",
+	"https://i.imgur.com/WI3Qg2G.jpg",
+	"Pestily",
+	"https://www.reddit.com/r/EscapefromTarkov/comments/f3tfry/pestilys_recommended_keys_for_every_map",
+	"k"
+)
+addImageOption(
+	"Items",
+	"https://i.redd.it/bu31y4cnikh41.png",
+	"u/Fenneca",
+	"https://www.reddit.com/r/EscapefromTarkov/comments/f5htgo/i_made_a_quick_glance_per_slot_value_guide_for/fi3z8rz/",
+	"i"
+)
+addImageOption(
+	"Hideout Items",
+	"https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/3/39/Hideout-Requirements-Items-to-Keep.jpg",
+	"u/Chab_TV",
+	"https://www.reddit.com/r/EscapefromTarkov/comments/du957n/hideout_requirements_items_to_keep/",
+	"h"
+)
 
 addHeaderButton("Stashes, Customs", () => { window.open("https://i.redd.it/cb4bv3tbggy31.jpg") })
 addHeaderButton("Quest Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/1/19/QuestItemRequirements.png") })
-addHeaderButton("Hideout Items", () => { window.open("https://gamepedia.cursecdn.com/escapefromtarkov_gamepedia/3/39/Hideout-Requirements-Items-to-Keep.jpg") })
 addHeaderButton("S.History", showSearchHistory)
 
 let googleInput = headerDiv.createChild(ElementType.INPUT)
@@ -209,6 +272,21 @@ searchHistory.setStyle({
 	"padding-left": `${settings.margin}em`
 })
 
+let imageCreditLabel = new HideableUIElement(ElementType.PARAGRAPH)
+imageCreditLabel.setStyle({
+	background: "#17202A",
+	color: "white",
+	top: "0px",
+	margin: "0px",
+	padding: "2px"
+})
+addContentElement(imageCreditLabel)
+imageCreditLabel.setStyle({
+	position: "absolute",
+	bottom: "0px",
+	top: ""
+})
+
 
 
 // Key press
@@ -218,7 +296,6 @@ setHotkey("s", () => {
 	(googleInput.element as HTMLInputElement).select()
 	googleInput.element.focus()
 })
-setHotkey("h", showHelpText)
 
 window.addEventListener("keydown", event => {
 	let key = event.key
