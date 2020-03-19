@@ -204,6 +204,13 @@ addImageOption(
 	"k"
 )
 addImageOption(
+	"Ammo",
+	"https://i.redd.it/eawzvoj4blc41.png",
+	"sunmachine",
+	"https://www.reddit.com/r/EscapefromTarkov/comments/eqk10n/for_new_players_my_braindead_simple_ammo_chart/",
+	"a"
+)
+addImageOption(
 	"Items",
 	"https://i.redd.it/bu31y4cnikh41.png",
 	"u/Fenneca",
@@ -255,6 +262,7 @@ helpTextBuilder
 	.addH4("EFT Dash")
 	.addParagraph("by <a href=\"https://github.com/birgersp\">birgersp</a>")
 	.addParagraph("Huge thanks to <a href=\"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov/\">Marvelin for creating these awesome maps</a>")
+	.addParagraph("Stashes hideout by m1ksu")
 
 let imageLoadingLabel = addContentElement(new HideableUIElement(ElementType.H4))
 imageLoadingLabel.setStyle({
