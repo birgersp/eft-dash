@@ -3,7 +3,13 @@
 
 <head>
     <title>EFT Dash</title>
-    <script data-main="ts/main" src="require.js"></script>
+    <script src="require.js"></script>
+    <script>
+        require.config({
+            urlArgs: "v=" + (new Date()).getTime()
+        })
+        require(["ts/main"])
+    </script>
     <style>
         body {
             margin: 0;
