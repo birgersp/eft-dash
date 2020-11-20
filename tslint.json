@@ -3,6 +3,38 @@
 		"semicolon": [
 			true,
 			"never"
-		]
+		],
+		"indent": [
+			true,
+			"tabs"
+		],
+		"member-ordering": [
+			true,
+			{
+				"alphabetize": true,
+				"order": [
+					"public-static-field",
+					"private-static-field",
+					"public-instance-field",
+					"private-instance-field",
+					"public-constructor",
+					"private-constructor",
+					"public-instance-method",
+					"protected-instance-method",
+					"private-instance-method"
+				]
+			}
+		],
+		"ordered-imports": [
+			true,
+			{
+				"import-sources-order": "lowercase-last",
+				"named-imports-order": "lowercase-first"
+			}
+		],
+		"strict-boolean-expressions": [
+			true
+		],
+		"object-literal-sort-keys": true
 	}
 }

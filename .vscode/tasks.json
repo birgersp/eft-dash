@@ -1,0 +1,39 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+		},
+		{
+			"label": "bundle",
+			"type": "gulp",
+			"task": "default",
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+		},
+		{
+			"label": "run",
+			"type": "shell",
+			"command": "./node_modules/.bin/http-server dist -p 8000 -o",
+			"problemMatcher": []
+		},
+		{
+			"label": "build and run",
+			"dependsOrder": "parallel",
+			"dependsOn": [
+				"build",
+				"create bundle",
+				"run server"
+			],
+			"problemMatcher": [],
+		}
+	]
+}

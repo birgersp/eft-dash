@@ -18,7 +18,7 @@ export class UIElement {
 		return child
 	}
 
-	static setStyle(element: HTMLElement, properties: Object) {
+	static setStyle(element: HTMLElement, properties: any) {
 		for (let key in properties) {
 			let value = properties[key]
 			element.style.setProperty(key, value)
@@ -34,26 +34,6 @@ export class UIElement {
 			this.element = specifier
 	}
 
-	setStyle(styleProperties: Object) {
-		UIElement.setStyle(this.element, styleProperties)
-	}
-
-	setAttributes(attributes: Object) {
-		for (let key in attributes) {
-			let value = attributes[key]
-			if (key == "innerHTML") {
-				this.element.innerHTML = value
-			} else {
-				this.element.setAttribute(key, value)
-			}
-		}
-	}
-
-	removeChildren() {
-		while (this.element.firstChild)
-			this.element.removeChild(this.element.firstChild)
-	}
-
 	addChild(element: UIElement) {
 		this.element.appendChild(element.element)
 	}
@@ -64,7 +44,27 @@ export class UIElement {
 		return child
 	}
 
+	removeChildren() {
+		while (this.element.firstChild != null)
+			this.element.removeChild(this.element.firstChild)
+	}
+
+	setAttributes(attributes: any) {
+		for (let key in attributes) {
+			let value = attributes[key]
+			if (key == "innerHTML") {
+				this.element.innerHTML = value
+			} else {
+				this.element.setAttribute(key, value)
+			}
+		}
+	}
+
 	setInnerHTML(string: string) {
 		this.setAttributes({ innerHTML: string })
+	}
+
+	setStyle(styleProperties: Object) {
+		UIElement.setStyle(this.element, styleProperties)
 	}
 }

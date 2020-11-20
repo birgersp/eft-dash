@@ -1,4 +1,4 @@
-import { UIElement, ElementType } from "./UIElement"
+import { ElementType, UIElement } from "./UIElement"
 
 export class HelpTextBuilder {
 

@@ -1,12 +1,22 @@
 {
 	"compilerOptions": {
-		"module": "amd",
-		"plugins": [{
-			"name": "typescript-tslint-plugin"
-		}],
-		"outDir": "web/ts"
+		"module": "commonjs",
+		"plugins": [
+			{
+				"name": "typescript-tslint-plugin",
+				"configFile": "./tslint.json"
+			}
+		],
+		"target": "es6",
+		"outDir": "build",
+		"strict": true,
+		"sourceMap": true
 	},
 	"include": [
-		"ts/**/*"
+		"src/**/*"
+	],
+	"exclude": [
+		"build",
+		"node_modules"
 	]
 }

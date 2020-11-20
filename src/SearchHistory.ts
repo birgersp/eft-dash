@@ -1,5 +1,5 @@
-import { UIElement, ElementType } from "./UIElement"
 import { HideableUIElement } from "./HideableUIElement"
+import { ElementType } from "./UIElement"
 
 class Search {
 
@@ -14,8 +14,8 @@ class Search {
 
 export class SearchHistory extends HideableUIElement {
 
-	private searches: Search[] = []
 	private static readonly LOCAL_STORAGE_KEY = "eft-dash-searches"
+	private searches: Search[] = []
 
 	constructor() {
 		super(ElementType.DIV)
@@ -33,11 +33,10 @@ export class SearchHistory extends HideableUIElement {
 		this.rePopulate()
 	}
 
-	private saveSearches() {
-		let data = JSON.stringify({
-			searches: this.searches
-		})
-		localStorage.setItem(SearchHistory.LOCAL_STORAGE_KEY, data)
+	private clearSearches() {
+		this.searches = []
+		this.saveSearches()
+		this.rePopulate()
 	}
 
 	private loadSearches() {
@@ -93,9 +92,10 @@ export class SearchHistory extends HideableUIElement {
 		}
 	}
 
-	private clearSearches() {
-		this.searches = []
-		this.saveSearches()
-		this.rePopulate()
+	private saveSearches() {
+		let data = JSON.stringify({
+			searches: this.searches
+		})
+		localStorage.setItem(SearchHistory.LOCAL_STORAGE_KEY, data)
 	}
 }

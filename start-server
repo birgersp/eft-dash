@@ -1,2 +1,0 @@
-#!/bin/bash
-start python -m http.server --directory web

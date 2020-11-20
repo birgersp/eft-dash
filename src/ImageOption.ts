@@ -1,12 +1,12 @@
-import { UIElement, ElementType } from "./UIElement"
 import { HideableUIElement } from "./HideableUIElement"
+import { ElementType } from "./UIElement"
 
 export class ImageOption {
 
+	readonly credit: string
+	readonly image = new HideableUIElement(ElementType.IMAGE)
 	readonly label: string
 	readonly url: string
-	readonly image = new HideableUIElement(ElementType.IMAGE)
-	readonly credit: string
 
 	constructor(label: string, url: string, credit: string) {
 

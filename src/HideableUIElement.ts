@@ -1,4 +1,4 @@
-import { UIElement, ElementType } from "./UIElement"
+import { ElementType, UIElement } from "./UIElement"
 
 export class HideableUIElement extends UIElement {
 
@@ -23,12 +23,12 @@ export class HideableUIElement extends UIElement {
 		this.setStyle({ opacity: this.opacity })
 	}
 
+	setTransition(seconds: number) {
+		this.setStyle({ transition: `opacity ${seconds}s linear` })
+	}
+
 	show() {
 		this.opacity = 1
 		this.setStyle({ opacity: this.opacity, visibility: "visible" })
-	}
-
-	setTransition(seconds: number) {
-		this.setStyle({ transition: `opacity ${seconds}s linear` })
 	}
 }

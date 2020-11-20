@@ -1,9 +1,9 @@
-import { ImageOption } from "./ImageOption"
-import { UIElement, ElementType } from "./UIElement"
-import { SearchHistory } from "./SearchHistory"
 import { HelpTextBuilder } from "./HelpTextBuilder"
-import { LocalStorageData } from "./LocalStorageData"
 import { HideableUIElement } from "./HideableUIElement"
+import { ImageOption } from "./ImageOption"
+import { LocalStorageData } from "./LocalStorageData"
+import { SearchHistory } from "./SearchHistory"
+import { ElementType, UIElement } from "./UIElement"
 
 function hideContentElements() {
 	for (let index in contentElements) {
@@ -93,8 +93,8 @@ function addImageOption(label: string, url: string, authorName: string, sourceLi
 	imageOptions.push(option)
 	let image = option.image
 	image.setStyle({
-		"width": "100%",
-		"object-fit": "contain"
+		"object-fit": "contain",
+		"width": "100%"
 	})
 	image.element.addEventListener("load", () => {
 		image.show()
@@ -110,7 +110,6 @@ function setHotkey(key: string, func: () => void) {
 }
 
 
-
 // Main UI elements
 
 let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
@@ -124,15 +123,15 @@ let contentElements: HideableUIElement[] = []
 let localStorageItemName = "eft-dash"
 
 let settings = {
-	margin: .3,
-	fullscreen: false
+	fullscreen: false,
+	margin: .3
 }
 
-let loadingHeaderElement = document.getElementById("loading_header")
+let loadingHeaderElement = document.getElementById("loading_header") as HTMLElement
 let loadingHeader = new HideableUIElement(loadingHeaderElement)
 setTimeout(() => { loadingHeader.hide() }, 10)
 
-let imageOptions = []
+let imageOptions: ImageOption[] = []
 let keyActions: Record<string, () => void> = {}
 
 
@@ -149,9 +148,9 @@ addHeaderButton("(f)Fullscreen", () => {
 
 addImageOption(
 	"Customs",
-	"https://forum.escapefromtarkov.com/uploads/monthly_2019_01/customs_marvelin1_5.jpg.139c43aa06da1ad715636913d1a5e9e3.jpg",
-	"Marvelin",
-	"https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov",
+	"https://i.redd.it/8udfaht87zd51.png",
+	"u/monkimonkimonk",
+	"https://www.reddit.com/r/EscapefromTarkov/comments/i0k2qz/updated_customs_map_for_127_with_loot_caches/",
 	"1"
 )
 addImageOption(
@@ -249,8 +248,8 @@ googleInput.element.addEventListener("keypress", (event) => {
 // Content
 
 contentDiv.setStyle({
-	"margin-top": `${settings.margin}em`,
-	"margin-bottom": `${settings.margin}em`
+	"margin-bottom": `${settings.margin}em`,
+	"margin-top": `${settings.margin}em`
 })
 
 let helpTextContainer = addContentElement(new HideableUIElement(ElementType.DIV))
@@ -266,11 +265,11 @@ helpTextBuilder
 
 let imageLoadingLabel = addContentElement(new HideableUIElement(ElementType.H4))
 imageLoadingLabel.setStyle({
-	position: "absolute",
-	top: "50%",
-	"text-align": "center",
-	width: "100%",
 	color: "white",
+	position: "absolute",
+	"text-align": "center",
+	top: "50%",
+	width: "100%",
 	"z-index": -1
 })
 
@@ -284,14 +283,14 @@ let imageCreditLabel = new HideableUIElement(ElementType.PARAGRAPH)
 imageCreditLabel.setStyle({
 	background: "#17202A",
 	color: "white",
-	top: "0px",
 	margin: "0px",
-	padding: "2px"
+	padding: "2px",
+	top: "0px"
 })
 addContentElement(imageCreditLabel)
 imageCreditLabel.setStyle({
-	position: "absolute",
 	bottom: "0px",
+	position: "absolute",
 	top: ""
 })
 
@@ -345,8 +344,7 @@ updateSize()
 
 // Local storage
 
-let localStorageData = new LocalStorageData()
-localStorageData.imageIndex = 0
+let localStorageData = new LocalStorageData(0)
 
 let locationHashHasIndex = false
 if (location.hash != "") {
