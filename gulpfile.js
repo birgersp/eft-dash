@@ -11,22 +11,24 @@ var preprocess = require("gulp-preprocess");
 var htmlGlob = ["src/*.html", "favicon.ico"];
 var dist = "dist"
 
-var watchedBrowserify = watchify(browserify({
+var b = browserify({
     basedir: ".",
     debug: true,
     entries: [
         "build/main.js"
     ],
     cache: {},
-    packageCache: {}
-}));
+    packageCache: {},
+    plugin: [watchify]
+});
 
 function bundle() {
 
     let timestamp = (new Date()).toString()
-    return watchedBrowserify
+    return b
         .bundle()
         .on("error", fancy_log)
+        .on("finish", fancy_log)
         .pipe(source("bundle.js"))
         .pipe(buffer())
         .pipe(preprocess({ context: { TIMESTAMP: `TIMESTAMP="${timestamp}"` } }))
@@ -41,7 +43,9 @@ function copyHtml() {
         .pipe(gulp.dest(dist))
 }
 
-gulp.task("default", gulp.parallel([bundle, copyHtml]));
-watchedBrowserify.on("update", bundle);
-watchedBrowserify.on("log", fancy_log);
-gulp.watch(htmlGlob, copyHtml)
+function watchHtml() {
+    gulp.watch(htmlGlob, copyHtml)
+}
+
+gulp.task("default", gulp.series([bundle, watchHtml]));
+b.on("update", bundle);
