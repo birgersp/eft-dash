@@ -13,8 +13,8 @@
 		},
 		{
 			"label": "bundle",
-			"type": "gulp",
-			"task": "default",
+			"type": "shell",
+			"command":"./node_modules/.bin/gulp default",
 			"problemMatcher": [
 				"$eslint-stylish"
 			],
