@@ -32,7 +32,7 @@ function bundle() {
         .pipe(source("bundle.js"))
         .pipe(buffer())
         .pipe(preprocess({ context: { TIMESTAMP: `TIMESTAMP="${timestamp}"` } }))
-        .pipe(terser())
+        // .pipe(terser())
         .pipe(sourcemaps.write("./"))
         .pipe(gulp.dest("dist"));
 }

@@ -3,6 +3,7 @@ import { HideableUIElement } from "./HideableUIElement"
 import { ImageOption } from "./ImageOption"
 import { LocalStorageData } from "./LocalStorageData"
 import { SearchHistory } from "./SearchHistory"
+import { Timer } from "./Timer"
 import { ElementType, UIElement } from "./UIElement"
 
 function hideContentElements() {
@@ -56,17 +57,6 @@ function showHelpText() {
 	helpTextContainer.show()
 }
 
-function updateSize() {
-	let contentSize = window.innerHeight
-	let headerSize = headerDiv.element.clientHeight
-	let imageHeight = contentSize - headerSize
-	imageOptions.forEach(option => {
-		option.image.setStyle({
-			"height": `calc(${imageHeight}px - ${settings.margin * 6}em)`
-		})
-	})
-}
-
 function saveLocal() {
 	let data = JSON.stringify(localStorageData)
 	localStorage.setItem(localStorageItemName, data)
@@ -93,6 +83,7 @@ function addImageOption(label: string, url: string, authorName: string, sourceLi
 	imageOptions.push(option)
 	let image = option.image
 	image.setStyle({
+		"height": "100%",
 		"object-fit": "contain",
 		"width": "100%"
 	})
@@ -112,8 +103,9 @@ function setHotkey(key: string, func: () => void) {
 
 // Main UI elements
 
-let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
+let headerVisible = true
 let contentDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
+let headerDiv = UIElement.createHTMLBodyChild(ElementType.DIV)
 let contentElements: HideableUIElement[] = []
 
 
@@ -137,6 +129,10 @@ let keyActions: Record<string, () => void> = {}
 
 
 // Header
+
+headerDiv.setStyle({
+	"position": "absolute"
+})
 
 addHeaderButton("Help", () => {
 	showHelpText()
@@ -331,14 +327,22 @@ window.addEventListener("keyup", event => {
 	}
 })
 
-let resizeTimeout: number
-window.addEventListener("resize", () => {
-	clearTimeout(resizeTimeout)
-	resizeTimeout = setTimeout(() => {
-		updateSize()
-	}, 100)
+
+
+
+let activationTimer = new Timer(1000, () => {
+	headerDiv.setStyle({ "visibility": "hidden" })
+	headerVisible = false
 })
-updateSize()
+activationTimer.reset()
+function activateHeader() {
+	if (!headerVisible) {
+		headerDiv.setStyle({ "visibility": "visible" })
+		headerVisible = true
+	}
+	activationTimer.reset()
+}
+window.addEventListener("mousemove", activateHeader)
 
 
 
