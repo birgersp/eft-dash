@@ -47,5 +47,5 @@ function watchHtml() {
     gulp.watch(htmlGlob, copyHtml)
 }
 
-gulp.task("default", gulp.series([bundle, watchHtml]));
+gulp.task("default", gulp.series([bundle, copyHtml, watchHtml]));
 b.on("update", bundle);

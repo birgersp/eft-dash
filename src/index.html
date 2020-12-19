@@ -3,39 +3,14 @@
 
 <head>
     <title>EFT Dash</title>
-    <script>
-        window.addEventListener("load", () => {
-            let script = document.createElement("script")
-            script["src"] = "bundle.js"
-            script.setAttribute("url", script["src"])
-            document.head.appendChild(script)
-        })
-    </script>
+    <script src="bundle.js"></script>
     <style>
         body {
-            margin: 0;
             background: #17202A;
-            overflow-y: hidden;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        p {
+        h3 {
             color: white
-        }
-
-        a {
-            color: white
-        }
-
-        :visited {
-            color: white
-        }
-
-        #loading_header {
-            position: absolute;
         }
     </style>
 </head>

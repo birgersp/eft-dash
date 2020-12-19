@@ -1,16 +1,17 @@
 export class Timer {
 
-	private timeout: number | undefined
+	timeoutId?: number
 
 	constructor(
-		readonly intervalMs: number,
-		readonly action: () => void
-	) { }
+		public timeMs: number,
+		public action: () => void
+	) {
+	}
 
 	reset() {
-		if (this.timeout != undefined) {
-			window.clearTimeout(this.timeout)
+		if (this.timeoutId != undefined) {
+			window.clearTimeout(this.timeoutId)
 		}
-		this.timeout = window.setTimeout(this.action, this.intervalMs)
+		this.timeoutId = window.setTimeout(() => { this.action() }, this.timeMs)
 	}
 }
