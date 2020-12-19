@@ -1,18 +1,38 @@
+import { AppImage } from "./AppImage"
+import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
 import { Timer } from "./Timer"
+import { imageOptions, ImageOption_temp } from "./imageOptions"
 import { clearDocument, setStyle } from "./util"
 
 export class App {
 
 	static readonly RESIZE_TIMER_MS = 100
-	canvas: HTMLCanvasElement
+	imageViewer = new ImageViewer()
 	menu = new Menu()
 
 	resizeTimer: Timer
 
 	constructor() {
-		this.canvas = document.createElement("canvas")
-		this.resizeTimer = new Timer(App.RESIZE_TIMER_MS, () => { this.updateSize() })
+		this.resizeTimer = new Timer(
+			App.RESIZE_TIMER_MS,
+			() => { this.imageViewer.updateSize() }
+		)
+	}
+
+	addImageOption(io: ImageOption_temp) {
+
+		let image = new AppImage(io, () => {
+			console.log("loaded")
+			if (this.imageViewer.currentImage == image) {
+				this.imageViewer.renderImage()
+			}
+		})
+		this.menu.addButton(io.name, () => {
+			image.load()
+			this.imageViewer.currentImage = image
+			this.imageViewer.renderImage()
+		})
 	}
 
 	fixStyle() {
@@ -27,26 +47,18 @@ export class App {
 
 		clearDocument()
 		this.fixStyle()
-		document.body.appendChild(this.canvas)
 		window.addEventListener("resize", () => {
 			this.resizeTimer.reset()
 		})
-		this.updateSize()
+		this.imageViewer.initialize()
 		this.populateMenu()
 	}
 
 	populateMenu() {
 
 		this.menu.initialize()
-		for (let i = 0; i < 50; i++) {
-			this.menu.addButton("Hello", () => { })
+		for (let io of imageOptions) {
+			this.addImageOption(io)
 		}
-	}
-
-	updateSize() {
-
-		let bcr = document.body.getBoundingClientRect()
-		this.canvas.width = bcr.width
-		this.canvas.height = bcr.height
 	}
 }

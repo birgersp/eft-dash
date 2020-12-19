@@ -1,7 +1,4 @@
 import { App } from "./App"
-import { clearDocument } from "./util"
-
-
 
 function main() {
 

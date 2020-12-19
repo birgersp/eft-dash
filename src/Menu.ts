@@ -16,6 +16,9 @@ export class Menu {
 			"type": "button",
 			"value": label
 		})
+		button.addEventListener("click", () => {
+			action()
+		})
 		this.container.appendChild(button)
 	}
 

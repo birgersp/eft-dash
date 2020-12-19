@@ -1,11 +1,12 @@
-type ImageOption_temp = {
+export type ImageOption_temp = {
 	authorName: string,
 	hotkey: string,
 	image: string,
 	name: string,
 	sourceUrl: string
 }
-let imageOptions: ImageOption_temp[] = []
+
+export let imageOptions: ImageOption_temp[] = []
 
 imageOptions.push({
 	authorName: "u/monkimonkimonk",
