@@ -23,12 +23,32 @@ export class ImageViewer {
 		}
 
 		let ctx = this.canvas.getContext("2d")!
+		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		if (!this.currentImage!.loaded) {
-			ctx.fillText("Loading ...", 10, 10)
+			this.drawLoadingText()
 			return
 		}
 
-		ctx.drawImage(this.currentImage!.image, 0, 0)
+		let w: number, h: number
+		let img = this.currentImage!.image
+		let ar = img.width / img.height
+		let car = this.canvas.width / this.canvas.height
+		if (car > ar) {
+			h = this.canvas.height
+			w = h * ar
+		} else {
+			w = this.canvas.width
+			h = w / ar
+		}
+		ctx.drawImage(this.currentImage!.image, 0, 0, w, h)
+	}
+
+	drawLoadingText() {
+
+		let ctx = this.canvas.getContext("2d")!
+		ctx.font = "2em arials"
+		ctx.fillStyle = "red"
+		ctx.fillText("Loading image ...", 100, 100)
 	}
 
 	updateSize() {

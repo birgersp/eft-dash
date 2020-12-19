@@ -1,4 +1,4 @@
-import { ImageOption_temp } from "./imageOptions"
+import { ImageDataObj } from "./images"
 
 export class AppImage {
 
@@ -6,7 +6,7 @@ export class AppImage {
 	loaded = false
 
 	constructor(
-		public options: ImageOption_temp,
+		public options: ImageDataObj,
 		public onLoaded: () => void
 	) {
 		this.image.addEventListener("load", () => {
