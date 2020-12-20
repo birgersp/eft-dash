@@ -7,6 +7,7 @@
 				"configFile": "./tslint.json"
 			}
 		],
+		"lib": ["dom", "es6", "es2020"],
 		"target": "es6",
 		"outDir": "build",
 		"strict": true,

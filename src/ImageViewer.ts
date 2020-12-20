@@ -1,21 +1,97 @@
 import { AppImage } from "./AppImage"
+import { toCharacter } from "./util"
 
 export class ImageViewer {
 
 	canvas: HTMLCanvasElement
+	ctx: CanvasRenderingContext2D
 	currentImage?: AppImage
+	imageDimensions = {
+		h: 0,
+		w: 0,
+		x: 0,
+		y: 0
+	}
 
 	constructor() {
 
 		this.canvas = document.createElement("canvas")
+		this.ctx = this.canvas.getContext("2d")!
+	}
+
+	drawGrid() {
+
+		this.ctx.font = "1em arial"
+		this.ctx.fillStyle = "white"
+		let textHeight = 14
+		let imgX = this.imageDimensions.x
+		let imgY = this.imageDimensions.y
+
+		let resolution = 16
+		this.ctx.strokeStyle = "yellow"
+		let cellWidth = this.imageDimensions.w / resolution
+		this.ctx.fillText(toCharacter(0), imgX + cellWidth / 2, imgY + textHeight)
+		for (let i = 1; i < resolution; i++) {
+			let x = imgX + i * cellWidth
+			let y = imgY
+			this.drawLine(x, y, 0, this.imageDimensions.h)
+			this.ctx.fillText(toCharacter(i), x + cellWidth / 2, y + textHeight)
+		}
+		let cellHeight = this.imageDimensions.h / resolution
+		for (let i = 1; i < resolution; i++) {
+			let x = this.imageDimensions.x
+			let y = this.imageDimensions.y + i * cellHeight
+			this.drawLine(x, y, this.imageDimensions.w, 0)
+		}
+	}
+
+	drawImage() {
+
+		if (this.currentImage == undefined) {
+			return
+		}
+
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+		if (!this.currentImage!.loaded) {
+			this.drawLoadingText()
+			return
+		}
+
+		let img = this.currentImage!.image
+		let ar = img.width / img.height
+		let canvasAr = this.canvas.width / this.canvas.height
+		if (canvasAr > ar) {
+			this.imageDimensions.h = this.canvas.height
+			this.imageDimensions.w = this.imageDimensions.h * ar
+			this.imageDimensions.x = (this.canvas.width - this.imageDimensions.w) / 2
+			this.imageDimensions.y = 0
+		} else {
+			this.imageDimensions.w = this.canvas.width
+			this.imageDimensions.h = this.imageDimensions.w / ar
+			this.imageDimensions.x = 0
+			this.imageDimensions.y = (this.canvas.height - this.imageDimensions.h) / 2
+		}
+		this.ctx.drawImage(
+			this.currentImage!.image,
+			this.imageDimensions.x, this.imageDimensions.y,
+			this.imageDimensions.w, this.imageDimensions.h
+		)
+		this.drawGrid()
+	}
+
+	drawLine(x: number, y: number, w: number, h: number) {
+
+		this.ctx.beginPath()
+		this.ctx.moveTo(x, y)
+		this.ctx.lineTo(x + w, y + h)
+		this.ctx.stroke()
 	}
 
 	drawLoadingText() {
 
-		let ctx = this.canvas.getContext("2d")!
-		ctx.font = "2em arial"
-		ctx.fillStyle = "red"
-		ctx.fillText("Loading image ...", 100, 100)
+		this.ctx.font = "2em arial"
+		this.ctx.fillStyle = "red"
+		this.ctx.fillText("Loading image ...", 100, 100)
 	}
 
 	initialize() {
@@ -24,42 +100,11 @@ export class ImageViewer {
 		this.updateSize()
 	}
 
-	renderImage() {
-
-		if (this.currentImage == undefined) {
-			return
-		}
-
-		let ctx = this.canvas.getContext("2d")!
-		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-		if (!this.currentImage!.loaded) {
-			this.drawLoadingText()
-			return
-		}
-
-		let w: number, h: number, x: number, y: number
-		let img = this.currentImage!.image
-		let ar = img.width / img.height
-		let canvasAr = this.canvas.width / this.canvas.height
-		if (canvasAr > ar) {
-			h = this.canvas.height
-			w = h * ar
-			x = (this.canvas.width - w) / 2
-			y = 0
-		} else {
-			w = this.canvas.width
-			h = w / ar
-			x = 0
-			y = (this.canvas.height - h) / 2
-		}
-		ctx.drawImage(this.currentImage!.image, x, y, w, h)
-	}
-
 	updateSize() {
 
 		let bcr = document.body.getBoundingClientRect()
 		this.canvas.width = bcr.width
 		this.canvas.height = bcr.height
-		this.renderImage()
+		this.drawImage()
 	}
 }

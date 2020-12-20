@@ -8,7 +8,7 @@ var terser = require("gulp-terser")
 var sourcemaps = require("gulp-sourcemaps");
 var preprocess = require("gulp-preprocess");
 
-var htmlGlob = ["src/*.html", "favicon.ico"];
+var miscFileGlob = ["src/*.html", "favicon.ico", "bluerect.png"];
 var dist = "dist"
 
 var b = browserify({
@@ -37,15 +37,15 @@ function bundle() {
         .pipe(gulp.dest("dist"));
 }
 
-function copyHtml() {
+function copyMisc() {
     return gulp
-        .src(htmlGlob)
+        .src(miscFileGlob)
         .pipe(gulp.dest(dist))
 }
 
-function watchHtml() {
-    gulp.watch(htmlGlob, copyHtml)
+function watchMisc() {
+    gulp.watch(miscFileGlob, copyMisc)
 }
 
-gulp.task("default", gulp.series([bundle, copyHtml, watchHtml]));
+gulp.task("default", gulp.series([bundle, copyMisc, watchMisc]));
 b.on("update", bundle);

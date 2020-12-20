@@ -3,7 +3,7 @@ import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
 import { Timer } from "./Timer"
 import { images, ImageDataObj } from "./images"
-import { clearDocument, setStyle } from "./util"
+import { clearDocument, ipIsLocalhost, setStyle } from "./util"
 
 export class App {
 
@@ -25,7 +25,7 @@ export class App {
 
 		let image = new AppImage(io, () => {
 			if (this.imageViewer.currentImage == image) {
-				this.imageViewer.renderImage()
+				this.imageViewer.drawImage()
 			}
 		})
 		this.appImages.push(image)
@@ -33,7 +33,7 @@ export class App {
 		let action = () => {
 			image.load()
 			this.imageViewer.currentImage = image
-			this.imageViewer.renderImage()
+			this.imageViewer.drawImage()
 		}
 		this.menu.addButton(label, action)
 		this.hotkeys.set(io.hotkey, action)
@@ -75,7 +75,7 @@ export class App {
 		for (let image of this.appImages) {
 			if (image.options.name == search) {
 				this.imageViewer.currentImage = image
-				this.imageViewer.renderImage()
+				this.imageViewer.drawImage()
 				image.load()
 				return
 			}
@@ -87,6 +87,16 @@ export class App {
 		this.menu.initialize()
 		for (let io of images) {
 			this.addImageOption(io)
+		}
+
+		if (ipIsLocalhost(window.location.hostname)) {
+			this.addImageOption({
+				authorName: "birgersp",
+				hotkey: "T",
+				image: "bluerect.png",
+				name: "Test",
+				sourceUrl: "http://birgersp.no"
+			})
 		}
 	}
 }

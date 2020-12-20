@@ -21,3 +21,12 @@ export function clearDocument() {
 		child = body.lastChild
 	}
 }
+
+export function toCharacter(num: number): string {
+	return (10 + num).toString(36)
+}
+
+export function ipIsLocalhost(ip: string): boolean {
+
+	return ["localhost", "127.0.0.1"].includes(ip)
+}
