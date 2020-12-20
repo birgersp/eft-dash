@@ -7,17 +7,32 @@ import { clearDocument, ipIsLocalhost, setStyle } from "./util"
 
 export class App {
 
+	static readonly HEADER_HIDING_TIMER_MS = 1000
 	static readonly RESIZE_TIMER_MS = 100
 	appImages: AppImage[] = []
+	headerHidden = false
+	headerHidingTimer: Timer
 	hotkeys: Map<string, () => void> = new Map()
 	imageViewer = new ImageViewer()
 	menu = new Menu()
 	resizeTimer: Timer
 
 	constructor() {
+
 		this.resizeTimer = new Timer(
 			App.RESIZE_TIMER_MS,
 			() => { this.imageViewer.updateSize() }
+		)
+
+		this.headerHidingTimer = new Timer(
+			App.HEADER_HIDING_TIMER_MS,
+			() => {
+				if (this.headerHidden || this.menu.hasMouseOver) {
+					return
+				}
+				this.menu.hide()
+				this.headerHidden = true
+			}
 		)
 	}
 
@@ -58,6 +73,14 @@ export class App {
 		this.populateMenu()
 		this.parseSearchParams()
 		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
+		window.addEventListener("mousemove", () => {
+			if (this.headerHidden) {
+				this.menu.show()
+				this.headerHidden = false
+			}
+			this.headerHidingTimer.reset()
+		})
+		this.headerHidingTimer.reset()
 	}
 
 	onKey(key: string) {
