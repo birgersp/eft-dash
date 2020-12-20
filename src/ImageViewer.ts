@@ -100,7 +100,7 @@ export class ImageViewer {
 	drawLoadingText() {
 
 		this.ctx.font = "2em arial"
-		this.ctx.fillStyle = "red"
+		this.ctx.fillStyle = "white"
 		this.ctx.fillText(`Loading "${this.currentImage!.options.name}" ...`, 100, 100)
 	}
 

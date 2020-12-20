@@ -1,4 +1,5 @@
 import { AppImage } from "./AppImage"
+import { Footer } from "./Footer"
 import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
 import { MenuAction } from "./MenuAction"
@@ -10,8 +11,9 @@ export class App {
 
 	static readonly HEADER_HIDING_TIMER_MS = 1000
 	static readonly RESIZE_TIMER_MS = 100
+
 	appImages: AppImage[] = []
-	footerDiv: HTMLDivElement
+	footer = new Footer()
 	headerHidden = false
 	headerHidingTimer: Timer
 	hotkeys: Map<string, () => void> = new Map()
@@ -35,12 +37,12 @@ export class App {
 					return
 				}
 				this.menu.hide()
+				this.footer.hide()
 				this.headerHidden = true
 			}
 		)
 
 		this.searchInput = document.createElement("input")
-		this.footerDiv = document.createElement("div")
 	}
 
 	addImageOption(io: ImageDataObj) {
@@ -104,21 +106,18 @@ export class App {
 		})
 		this.imageViewer.initialize()
 		this.populateMenu()
-		this.parseSearchParams()
 		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
 		window.addEventListener("mousemove", () => {
 			if (this.headerHidden) {
 				this.menu.show()
+				this.footer.show()
 				this.headerHidden = false
 			}
 			this.headerHidingTimer.reset()
 		})
 		this.headerHidingTimer.reset()
-		setStyle(this.footerDiv, {
-			"bottom": "0",
-			"position": "absolute"
-		})
-		document.body.appendChild(this.footerDiv)
+		this.footer.initialize()
+		this.parseSearchParams()
 	}
 
 	onKey(key: string) {
@@ -187,18 +186,7 @@ export class App {
 
 		this.imageViewer.currentImage = image
 		this.imageViewer.draw()
-		this.setFooterText(image.options.authorName, image.options.sourceUrl)
+		this.footer.setText(image.options.authorName, image.options.sourceUrl)
 		image.load()
-	}
-
-	setFooterText(text: string, link: string) {
-
-		removeChildrenOf(this.footerDiv)
-		let linkElement = document.createElement("a")
-		setAttributes(linkElement, {
-			"href": link,
-			"innerHTML": text
-		})
-		this.footerDiv.appendChild(linkElement)
 	}
 }
