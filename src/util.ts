@@ -1,7 +1,11 @@
 export function setAttributes(element: HTMLElement, properties: any) {
 
 	for (let key in properties) {
-		element.setAttribute(key, properties[key])
+		if (key == "innerHTML") {
+			element.innerHTML = properties[key]
+		} else {
+			element.setAttribute(key, properties[key])
+		}
 	}
 }
 
@@ -12,14 +16,18 @@ export function setStyle(element: HTMLElement, properties: any) {
 	}
 }
 
+export function removeChildrenOf(element: HTMLElement) {
+
+	let child = element.lastChild
+	while (child != null) {
+		element.removeChild(child)
+		child = element.lastChild
+	}
+}
+
 export function clearDocument() {
 
-	let body = document.body
-	let child = body.lastChild
-	while (child != null) {
-		body.removeChild(child)
-		child = body.lastChild
-	}
+	removeChildrenOf(document.body)
 }
 
 export function toCharacter(num: number): string {

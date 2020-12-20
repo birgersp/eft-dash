@@ -4,19 +4,22 @@ import { Menu } from "./Menu"
 import { MenuAction } from "./MenuAction"
 import { Timer } from "./Timer"
 import { images, ImageDataObj } from "./images"
-import { clearDocument, ipIsLocalhost, setStyle } from "./util"
+import { clearDocument, ipIsLocalhost, removeChildrenOf, setAttributes, setStyle } from "./util"
 
 export class App {
 
 	static readonly HEADER_HIDING_TIMER_MS = 1000
 	static readonly RESIZE_TIMER_MS = 100
 	appImages: AppImage[] = []
+	footerDiv: HTMLDivElement
 	headerHidden = false
 	headerHidingTimer: Timer
 	hotkeys: Map<string, () => void> = new Map()
 	imageViewer = new ImageViewer()
 	menu = new Menu()
 	resizeTimer: Timer
+	searchBarFocused = false
+	searchInput: HTMLInputElement
 
 	constructor() {
 
@@ -28,13 +31,16 @@ export class App {
 		this.headerHidingTimer = new Timer(
 			App.HEADER_HIDING_TIMER_MS,
 			() => {
-				if (this.headerHidden || this.menu.hasMouseOver) {
+				if (this.headerHidden || this.menu.hasMouseOver || this.searchBarFocused) {
 					return
 				}
 				this.menu.hide()
 				this.headerHidden = true
 			}
 		)
+
+		this.searchInput = document.createElement("input")
+		this.footerDiv = document.createElement("div")
 	}
 
 	addImageOption(io: ImageDataObj) {
@@ -47,9 +53,7 @@ export class App {
 		this.appImages.push(image)
 		this.addMenuAction({
 			action: () => {
-				image.load()
-				this.imageViewer.currentImage = image
-				this.imageViewer.draw()
+				this.selectImage(image)
 			},
 			hotkey: io.hotkey,
 			label: io.name
@@ -65,6 +69,22 @@ export class App {
 		}
 		text += menuAction.label
 		this.menu.addButton(text, menuAction.action)
+	}
+
+	addSearchBar() {
+
+		setAttributes(this.searchInput, {
+			"placeholder": "(s)Search"
+		})
+		this.searchInput.addEventListener("focus", () => { this.searchBarFocused = true })
+		this.searchInput.addEventListener("blur", () => {
+			this.searchBarFocused = false
+			this.headerHidingTimer.reset()
+		})
+		this.menu.container.appendChild(this.searchInput)
+		this.hotkeys.set("s", () => {
+			this.searchInput.focus()
+		})
 	}
 
 	fixStyle() {
@@ -94,9 +114,27 @@ export class App {
 			this.headerHidingTimer.reset()
 		})
 		this.headerHidingTimer.reset()
+		setStyle(this.footerDiv, {
+			"bottom": "0",
+			"position": "absolute"
+		})
+		document.body.appendChild(this.footerDiv)
 	}
 
 	onKey(key: string) {
+
+		if (this.headerHidden) {
+			this.menu.show()
+			this.headerHidden = false
+			this.headerHidingTimer.reset()
+		}
+
+		if (this.searchBarFocused) {
+			if (key == "Escape") {
+				this.searchInput.blur()
+			}
+			return
+		}
 
 		let action = this.hotkeys.get(key)
 		action?.()
@@ -110,9 +148,7 @@ export class App {
 		}
 		for (let image of this.appImages) {
 			if (image.options.name == search) {
-				this.imageViewer.currentImage = image
-				this.imageViewer.draw()
-				image.load()
+				this.selectImage(image)
 				return
 			}
 		}
@@ -134,6 +170,8 @@ export class App {
 			label: "Grid"
 		})
 
+		this.addSearchBar()
+
 		if (ipIsLocalhost(window.location.hostname)) {
 			this.addImageOption({
 				authorName: "birgersp",
@@ -143,5 +181,24 @@ export class App {
 				sourceUrl: "http://birgersp.no"
 			})
 		}
+	}
+
+	selectImage(image: AppImage) {
+
+		this.imageViewer.currentImage = image
+		this.imageViewer.draw()
+		this.setFooterText(image.options.authorName, image.options.sourceUrl)
+		image.load()
+	}
+
+	setFooterText(text: string, link: string) {
+
+		removeChildrenOf(this.footerDiv)
+		let linkElement = document.createElement("a")
+		setAttributes(linkElement, {
+			"href": link,
+			"innerHTML": text
+		})
+		this.footerDiv.appendChild(linkElement)
 	}
 }
