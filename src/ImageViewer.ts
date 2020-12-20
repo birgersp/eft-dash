@@ -13,7 +13,7 @@ export class ImageViewer {
 	drawLoadingText() {
 
 		let ctx = this.canvas.getContext("2d")!
-		ctx.font = "2em arials"
+		ctx.font = "2em arial"
 		ctx.fillStyle = "red"
 		ctx.fillText("Loading image ...", 100, 100)
 	}

@@ -9,6 +9,7 @@ export class App {
 
 	static readonly RESIZE_TIMER_MS = 100
 	appImages: AppImage[] = []
+	hotkeys: Map<string, () => void> = new Map()
 	imageViewer = new ImageViewer()
 	menu = new Menu()
 	resizeTimer: Timer
@@ -28,11 +29,14 @@ export class App {
 			}
 		})
 		this.appImages.push(image)
-		this.menu.addButton(io.name, () => {
+		let label = `(${io.hotkey})${io.name}`
+		let action = () => {
 			image.load()
 			this.imageViewer.currentImage = image
 			this.imageViewer.renderImage()
-		})
+		}
+		this.menu.addButton(label, action)
+		this.hotkeys.set(io.hotkey, action)
 	}
 
 	fixStyle() {
@@ -53,6 +57,13 @@ export class App {
 		this.imageViewer.initialize()
 		this.populateMenu()
 		this.parseSearchParams()
+		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
+	}
+
+	onKey(key: string) {
+
+		let action = this.hotkeys.get(key)
+		action?.()
 	}
 
 	parseSearchParams() {
