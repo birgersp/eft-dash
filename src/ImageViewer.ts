@@ -112,9 +112,8 @@ export class ImageViewer {
 
 	updateSize() {
 
-		let bcr = document.body.getBoundingClientRect()
-		this.canvas.width = bcr.width
-		this.canvas.height = bcr.height
+		this.canvas.width = window.innerWidth
+		this.canvas.height = window.innerHeight
 		this.draw()
 	}
 }
