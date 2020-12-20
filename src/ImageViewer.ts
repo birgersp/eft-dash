@@ -66,13 +66,23 @@ export class ImageViewer {
 		let imgX = this.imageDimensions.x
 		let imgY = this.imageDimensions.y
 
-		let resolution = 8
-		this.ctx.strokeStyle = "yellow"
+		let ar = this.imageDimensions.w / this.imageDimensions.h
 
-		let cellWidth = this.imageDimensions.w / resolution
+		let xResolution: number, yResolution: number
+		if (ar > 1) {
+			xResolution = 8
+			yResolution = xResolution / ar
+		} else {
+			yResolution = 8
+			xResolution = yResolution * ar
+		}
+
+		this.ctx.strokeStyle = "white"
+
+		let cellWidth = this.imageDimensions.w / xResolution
 		this.ctx.fillText("A1", imgX, imgY)
 		this.ctx.textAlign = "center"
-		for (let i = 1; i < resolution; i++) {
+		for (let i = 1; i < xResolution; i++) {
 			let x = imgX + i * cellWidth
 			let y = imgY
 			this.drawLine(x, y, 0, this.imageDimensions.h)
@@ -80,8 +90,8 @@ export class ImageViewer {
 		}
 
 		this.ctx.textAlign = "left"
-		let cellHeight = this.imageDimensions.h / resolution
-		for (let i = 1; i < resolution; i++) {
+		let cellHeight = this.imageDimensions.h / yResolution
+		for (let i = 1; i < yResolution; i++) {
 			let x = this.imageDimensions.x
 			let y = this.imageDimensions.y + i * cellHeight
 			this.drawLine(x, y, this.imageDimensions.w, 0)
