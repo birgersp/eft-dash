@@ -12,11 +12,49 @@ export class ImageViewer {
 		x: 0,
 		y: 0
 	}
+	showGrid = false
 
 	constructor() {
 
 		this.canvas = document.createElement("canvas")
 		this.ctx = this.canvas.getContext("2d")!
+	}
+
+	draw() {
+
+		if (this.currentImage == undefined) {
+			return
+		}
+
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+		if (!this.currentImage!.loaded) {
+			this.drawLoadingText()
+			return
+		}
+
+		let img = this.currentImage!.image
+		let ar = img.width / img.height
+		let canvasAr = this.canvas.width / this.canvas.height
+		if (canvasAr > ar) {
+			this.imageDimensions.h = this.canvas.height
+			this.imageDimensions.w = this.imageDimensions.h * ar
+			this.imageDimensions.x = (this.canvas.width - this.imageDimensions.w) / 2
+			this.imageDimensions.y = 0
+		} else {
+			this.imageDimensions.w = this.canvas.width
+			this.imageDimensions.h = this.imageDimensions.w / ar
+			this.imageDimensions.x = 0
+			this.imageDimensions.y = (this.canvas.height - this.imageDimensions.h) / 2
+		}
+		this.ctx.drawImage(
+			this.currentImage!.image,
+			this.imageDimensions.x, this.imageDimensions.y,
+			this.imageDimensions.w, this.imageDimensions.h
+		)
+
+		if (this.showGrid) {
+			this.drawGrid()
+		}
 	}
 
 	drawGrid() {
@@ -51,40 +89,6 @@ export class ImageViewer {
 		}
 	}
 
-	drawImage() {
-
-		if (this.currentImage == undefined) {
-			return
-		}
-
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-		if (!this.currentImage!.loaded) {
-			this.drawLoadingText()
-			return
-		}
-
-		let img = this.currentImage!.image
-		let ar = img.width / img.height
-		let canvasAr = this.canvas.width / this.canvas.height
-		if (canvasAr > ar) {
-			this.imageDimensions.h = this.canvas.height
-			this.imageDimensions.w = this.imageDimensions.h * ar
-			this.imageDimensions.x = (this.canvas.width - this.imageDimensions.w) / 2
-			this.imageDimensions.y = 0
-		} else {
-			this.imageDimensions.w = this.canvas.width
-			this.imageDimensions.h = this.imageDimensions.w / ar
-			this.imageDimensions.x = 0
-			this.imageDimensions.y = (this.canvas.height - this.imageDimensions.h) / 2
-		}
-		this.ctx.drawImage(
-			this.currentImage!.image,
-			this.imageDimensions.x, this.imageDimensions.y,
-			this.imageDimensions.w, this.imageDimensions.h
-		)
-		this.drawGrid()
-	}
-
 	drawLine(x: number, y: number, w: number, h: number) {
 
 		this.ctx.beginPath()
@@ -111,6 +115,6 @@ export class ImageViewer {
 		let bcr = document.body.getBoundingClientRect()
 		this.canvas.width = bcr.width
 		this.canvas.height = bcr.height
-		this.drawImage()
+		this.draw()
 	}
 }

@@ -1,6 +1,7 @@
 import { AppImage } from "./AppImage"
 import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
+import { MenuAction } from "./MenuAction"
 import { Timer } from "./Timer"
 import { images, ImageDataObj } from "./images"
 import { clearDocument, ipIsLocalhost, setStyle } from "./util"
@@ -40,18 +41,30 @@ export class App {
 
 		let image = new AppImage(io, () => {
 			if (this.imageViewer.currentImage == image) {
-				this.imageViewer.drawImage()
+				this.imageViewer.draw()
 			}
 		})
 		this.appImages.push(image)
-		let label = `(${io.hotkey})${io.name}`
-		let action = () => {
-			image.load()
-			this.imageViewer.currentImage = image
-			this.imageViewer.drawImage()
+		this.addMenuAction({
+			action: () => {
+				image.load()
+				this.imageViewer.currentImage = image
+				this.imageViewer.draw()
+			},
+			hotkey: io.hotkey,
+			label: io.name
+		})
+	}
+
+	addMenuAction(menuAction: MenuAction) {
+
+		let text = ""
+		if (menuAction.hotkey != null) {
+			text += `(${menuAction.hotkey})`
+			this.hotkeys.set(menuAction.hotkey, menuAction.action)
 		}
-		this.menu.addButton(label, action)
-		this.hotkeys.set(io.hotkey, action)
+		text += menuAction.label
+		this.menu.addButton(text, menuAction.action)
 	}
 
 	fixStyle() {
@@ -98,7 +111,7 @@ export class App {
 		for (let image of this.appImages) {
 			if (image.options.name == search) {
 				this.imageViewer.currentImage = image
-				this.imageViewer.drawImage()
+				this.imageViewer.draw()
 				image.load()
 				return
 			}
@@ -112,10 +125,19 @@ export class App {
 			this.addImageOption(io)
 		}
 
+		this.addMenuAction({
+			action: () => {
+				this.imageViewer.showGrid = !this.imageViewer.showGrid
+				this.imageViewer.draw()
+			},
+			hotkey: "g",
+			label: "Grid"
+		})
+
 		if (ipIsLocalhost(window.location.hostname)) {
 			this.addImageOption({
 				authorName: "birgersp",
-				hotkey: "T",
+				hotkey: "t",
 				image: "bluerect.png",
 				name: "Test",
 				sourceUrl: "http://birgersp.no"
