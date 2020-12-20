@@ -23,7 +23,7 @@ export function clearDocument() {
 }
 
 export function toCharacter(num: number): string {
-	return (10 + num).toString(36)
+	return (10 + num).toString(36).toUpperCase()
 }
 
 export function ipIsLocalhost(ip: string): boolean {

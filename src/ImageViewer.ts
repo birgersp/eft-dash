@@ -22,26 +22,32 @@ export class ImageViewer {
 	drawGrid() {
 
 		this.ctx.font = "1em arial"
-		this.ctx.fillStyle = "white"
+		this.ctx.fillStyle = "black"
+		this.ctx.textBaseline = "top"
 		let textHeight = 14
 		let imgX = this.imageDimensions.x
 		let imgY = this.imageDimensions.y
 
-		let resolution = 16
+		let resolution = 8
 		this.ctx.strokeStyle = "yellow"
+
 		let cellWidth = this.imageDimensions.w / resolution
-		this.ctx.fillText(toCharacter(0), imgX + cellWidth / 2, imgY + textHeight)
+		this.ctx.fillText("A1", imgX, imgY)
+		this.ctx.textAlign = "center"
 		for (let i = 1; i < resolution; i++) {
 			let x = imgX + i * cellWidth
 			let y = imgY
 			this.drawLine(x, y, 0, this.imageDimensions.h)
-			this.ctx.fillText(toCharacter(i), x + cellWidth / 2, y + textHeight)
+			this.ctx.fillText(toCharacter(i), x + cellWidth / 2, y)
 		}
+
+		this.ctx.textAlign = "left"
 		let cellHeight = this.imageDimensions.h / resolution
 		for (let i = 1; i < resolution; i++) {
 			let x = this.imageDimensions.x
 			let y = this.imageDimensions.y + i * cellHeight
 			this.drawLine(x, y, this.imageDimensions.w, 0)
+			this.ctx.fillText(`${i + 1}`, imgX, imgY + cellHeight * (i + 0.5) - textHeight / 2)
 		}
 	}
 
