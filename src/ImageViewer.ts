@@ -1,4 +1,5 @@
 import { AppImage } from "./AppImage"
+import { AppState } from "./AppState"
 import { toCharacter } from "./util"
 
 export class ImageViewer {

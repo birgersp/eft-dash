@@ -1,4 +1,5 @@
 import { AppImage } from "./AppImage"
+import { AppState } from "./AppState"
 import { Footer } from "./Footer"
 import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
@@ -10,6 +11,7 @@ import { clearDocument, ipIsLocalhost, removeChildrenOf, setAttributes, setStyle
 export class App {
 
 	static readonly HEADER_HIDING_TIMER_MS = 1000
+	static readonly LOCALSTORAGE_ITEM_NAME = "eft-dash"
 	static readonly RESIZE_TIMER_MS = 100
 
 	appImages: AppImage[] = []
@@ -117,7 +119,29 @@ export class App {
 		})
 		this.headerHidingTimer.reset()
 		this.footer.initialize()
+		window.addEventListener("beforeunload", () => {
+			this.saveState()
+		})
+		this.loadState()
 		this.parseSearchParams()
+		this.imageViewer.draw()
+	}
+
+	loadState() {
+
+		let json = localStorage.getItem(App.LOCALSTORAGE_ITEM_NAME)
+		if (json == null) {
+			return
+		}
+		let state = JSON.parse(json!) as AppState
+		this.imageViewer.showGrid = state.gridEnabled
+		if (this.imageViewer.currentImage == undefined) {
+			for (let image of this.appImages) {
+				if (image.options.name == state.currentImageName) {
+					this.selectImage(image)
+				}
+			}
+		}
 	}
 
 	onKey(key: string) {
@@ -180,6 +204,17 @@ export class App {
 				sourceUrl: "http://birgersp.no"
 			})
 		}
+	}
+
+	saveState() {
+
+		let state: AppState = {
+			currentImageName: this.imageViewer.currentImage!.options.name,
+			gridEnabled: this.imageViewer.showGrid,
+			searches: []
+		}
+		let json = JSON.stringify(state)
+		localStorage.setItem(App.LOCALSTORAGE_ITEM_NAME, json)
 	}
 
 	selectImage(image: AppImage) {
