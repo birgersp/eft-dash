@@ -84,6 +84,14 @@ export class App {
 			this.searchBarFocused = false
 			this.headerHidingTimer.reset()
 		})
+		this.searchInput.addEventListener("keypress", (evt) => {
+			if (evt.key != "Enter") { return }
+			let searchInputValue = this.searchInput.value
+			let url = `escape from tarkov ${searchInputValue}`
+			url = url.replace(/ /g, "+")
+			url = `http://www.google.com/search?q=${url}`
+			window.open(url)
+		})
 		this.menu.container.appendChild(this.searchInput)
 		this.hotkeys.set("s", () => {
 			this.searchInput.focus()
@@ -144,10 +152,11 @@ export class App {
 
 	onKey(key: string) {
 
+		this.headerHidingTimer.reset()
+
 		if (this.headerHidden) {
 			this.menu.show()
 			this.headerHidden = false
-			this.headerHidingTimer.reset()
 		}
 
 		if (this.searchBarFocused) {
