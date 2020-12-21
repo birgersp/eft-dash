@@ -38,3 +38,9 @@ export function ipIsLocalhost(ip: string): boolean {
 
 	return ["localhost", "127.0.0.1"].includes(ip)
 }
+
+export function drawText(context: CanvasRenderingContext2D, text: string, x: number, y: number) {
+
+	context.fillText(text, x, y)
+	context.strokeText(text, x, y)
+}

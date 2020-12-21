@@ -1,6 +1,5 @@
 import { AppImage } from "./AppImage"
-import { AppState } from "./AppState"
-import { toCharacter } from "./util"
+import { drawText, toCharacter } from "./util"
 
 export class ImageViewer {
 
@@ -26,6 +25,11 @@ export class ImageViewer {
 		if (this.currentImage == undefined) {
 			return
 		}
+
+		this.ctx.font = "bold 2em arial"
+		this.ctx.fillStyle = "white"
+		this.ctx.strokeStyle = "black"
+		this.ctx.lineWidth = 2
 
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		if (!this.currentImage!.loaded) {
@@ -60,9 +64,8 @@ export class ImageViewer {
 
 	drawGrid() {
 
-		this.ctx.font = "1em arial"
-		this.ctx.fillStyle = "black"
 		this.ctx.textBaseline = "top"
+
 		let textHeight = 14
 		let imgX = this.imageDimensions.x
 		let imgY = this.imageDimensions.y
@@ -78,16 +81,14 @@ export class ImageViewer {
 			xResolution = yResolution * ar
 		}
 
-		this.ctx.strokeStyle = "white"
-
 		let cellWidth = this.imageDimensions.w / xResolution
-		this.ctx.fillText("A1", imgX, imgY)
+		drawText(this.ctx, "A1", imgX, imgY)
 		this.ctx.textAlign = "center"
 		for (let i = 1; i < xResolution; i++) {
 			let x = imgX + i * cellWidth
 			let y = imgY
 			this.drawLine(x, y, 0, this.imageDimensions.h)
-			this.ctx.fillText(toCharacter(i), x + cellWidth / 2, y)
+			drawText(this.ctx, toCharacter(i), x + cellWidth / 2, y)
 		}
 
 		this.ctx.textAlign = "left"
@@ -96,7 +97,7 @@ export class ImageViewer {
 			let x = this.imageDimensions.x
 			let y = this.imageDimensions.y + i * cellHeight
 			this.drawLine(x, y, this.imageDimensions.w, 0)
-			this.ctx.fillText(`${i + 1}`, imgX, imgY + cellHeight * (i + 0.5) - textHeight / 2)
+			drawText(this.ctx, `${i + 1}`, imgX, imgY + cellHeight * (i + 0.5) - textHeight / 2)
 		}
 	}
 
@@ -110,9 +111,7 @@ export class ImageViewer {
 
 	drawLoadingText() {
 
-		this.ctx.font = "2em arial"
-		this.ctx.fillStyle = "white"
-		this.ctx.fillText(`Loading "${this.currentImage!.options.name}" ...`, 100, 100)
+		drawText(this.ctx, `Loading "${this.currentImage!.options.name}" ...`, 100, 100)
 	}
 
 	initialize() {
