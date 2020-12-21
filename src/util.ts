@@ -44,3 +44,10 @@ export function drawText(context: CanvasRenderingContext2D, text: string, x: num
 	context.fillText(text, x, y)
 	context.strokeText(text, x, y)
 }
+
+export function appendTo(parent: HTMLElement, ...children: HTMLElement[]) {
+
+	for (let child of children) {
+		parent.appendChild(child)
+	}
+}

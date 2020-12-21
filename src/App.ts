@@ -6,7 +6,7 @@ import { MenuAction } from "./MenuAction"
 import { SearchHistory } from "./SearchHistory"
 import { Timer } from "./Timer"
 import { images, ImageDataObj } from "./images"
-import { clearDocument, ipIsLocalhost, setAttributes, setStyle } from "./util"
+import { appendTo, clearDocument, ipIsLocalhost, setAttributes, setStyle } from "./util"
 
 export class App {
 
@@ -46,9 +46,7 @@ export class App {
 		this.searchInput = document.createElement("input")
 
 		clearDocument()
-		document.body.appendChild(this.menu.div)
-		document.body.appendChild(this.imageViewer.div)
-		document.body.appendChild(this.searchHistory.div)
+		appendTo(document.body, this.menu.div, this.imageViewer.div, this.searchHistory.div)
 		this.fixStyle()
 		window.addEventListener("resize", () => {
 			this.resizeTimer.reset()
