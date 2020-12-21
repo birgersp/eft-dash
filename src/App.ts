@@ -4,6 +4,7 @@ import { Footer } from "./Footer"
 import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
 import { MenuAction } from "./MenuAction"
+import { SearchHistory } from "./SearchHistory"
 import { Timer } from "./Timer"
 import { images, ImageDataObj } from "./images"
 import { clearDocument, ipIsLocalhost, removeChildrenOf, setAttributes, setStyle } from "./util"
@@ -23,6 +24,7 @@ export class App {
 	menu = new Menu()
 	resizeTimer: Timer
 	searchBarFocused = false
+	searchHistory = new SearchHistory()
 	searchInput: HTMLInputElement
 
 	constructor() {
@@ -131,6 +133,8 @@ export class App {
 		this.loadState()
 		this.parseSearchParams()
 		this.imageViewer.draw()
+		this.searchHistory.update()
+		this.searchHistory.initialize()
 	}
 
 	loadState() {
