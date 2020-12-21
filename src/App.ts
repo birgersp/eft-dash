@@ -39,7 +39,6 @@ export class App {
 					return
 				}
 				this.menu.hide()
-				this.footer.hide()
 				this.headerHidden = true
 			}
 		)
@@ -112,7 +111,6 @@ export class App {
 		window.addEventListener("mousemove", () => {
 			if (this.headerHidden) {
 				this.menu.show()
-				this.footer.show()
 				this.headerHidden = false
 			}
 			this.headerHidingTimer.reset()

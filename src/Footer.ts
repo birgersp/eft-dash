@@ -9,11 +9,6 @@ export class Footer {
 		this.container = document.createElement("div")
 	}
 
-	hide() {
-
-		setStyle(this.container, { "visibility": "hidden" })
-	}
-
 	initialize() {
 
 		setStyle(this.container, {
@@ -41,10 +36,5 @@ export class Footer {
 		})
 		pElement.appendChild(aElement)
 		this.container.appendChild(pElement)
-	}
-
-	show() {
-
-		setStyle(this.container, { "visibility": "visible" })
 	}
 }
