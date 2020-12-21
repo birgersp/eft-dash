@@ -4,6 +4,8 @@ import { drawText, removeChildrenOf, setAttributes, setStyle, toCharacter } from
 
 export class ImageViewer extends Container {
 
+	static readonly GRID_RESOLUTION = 9
+
 	canvas = document.createElement("canvas")
 	ctx: CanvasRenderingContext2D
 	currentImage?: AppImage
@@ -86,10 +88,10 @@ export class ImageViewer extends Container {
 
 		let xResolution: number, yResolution: number
 		if (ar > 1) {
-			xResolution = 8
+			xResolution = ImageViewer.GRID_RESOLUTION
 			yResolution = xResolution / ar
 		} else {
-			yResolution = 8
+			yResolution = ImageViewer.GRID_RESOLUTION
 			xResolution = yResolution * ar
 		}
 

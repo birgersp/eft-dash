@@ -217,7 +217,6 @@ export class App {
 					this.searchHistory.hide()
 				}
 			},
-			hotkey: "h",
 			label: "S. history"
 		})
 
@@ -247,6 +246,8 @@ export class App {
 
 	selectImage(image: AppImage) {
 
+		this.searchHistory.hide()
+		this.imageViewer.show()
 		this.imageViewer.currentImage = image
 		this.imageViewer.draw()
 		image.load()

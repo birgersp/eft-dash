@@ -1,4 +1,5 @@
 import { Container } from "./Container"
+import { Elem } from "./Elem"
 import { removeChildrenOf, setAttributes, setStyle } from "./util"
 
 export type Search = {
@@ -84,5 +85,19 @@ export class SearchHistory extends Container {
 
 			this.addParagraph(search.label, search.url)
 		}
+
+		let button = new Elem("input")
+			.set({
+				"type": "button",
+				"value": "Clear",
+			})
+			.style({
+				"margin-top": "2em"
+			})
+			.appendTo(this.div)
+		button.element.addEventListener("click", () => {
+			this.searches = []
+			this.update()
+		})
 	}
 }
