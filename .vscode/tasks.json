@@ -27,13 +27,12 @@
 		},
 		{
 			"label": "build and run",
-			"dependsOrder": "parallel",
+			"type": "shell",
 			"dependsOn": [
 				"build",
-				"create bundle",
-				"run server"
-			],
-			"problemMatcher": [],
+				"bundle",
+				"run"
+			]
 		}
 	]
 }
