@@ -1,29 +1,35 @@
+import { Container } from "./Container"
 import { removeChildrenOf, setAttributes, setStyle } from "./util"
 
 export type Search = {
-
+	label: string,
+	url: string
 }
 
-export class SearchHistory {
+export class SearchHistory extends Container {
 
-	container: HTMLDivElement
 	searches: Search[] = []
 	visible = false
 
 	constructor() {
 
-		this.container = document.createElement("div")
-		setStyle(this.container, {
+		super()
+		setStyle(this.div, {
 			"color": "white",
 			"margin": "2em",
 			"position": "absolute",
 			"top": "0px"
 		})
+
+		this.hide()
 	}
 
 	addParagraph(text: string, link?: string) {
 
 		let p = document.createElement("p")
+		setStyle(p, {
+			"margin": "0px"
+		})
 		if (link != undefined) {
 			let a = document.createElement("a")
 			setAttributes(a, {
@@ -36,26 +42,20 @@ export class SearchHistory {
 				"innerHTML": text
 			})
 		}
-		this.container.appendChild(p)
+		this.div.appendChild(p)
 	}
 
 	hide() {
 
-		setStyle(this.container, {
+		setStyle(this.div, {
 			"visibility": "hidden"
 		})
 		this.visible = false
 	}
 
-	initialize() {
-
-		this.hide()
-		document.body.appendChild(this.container)
-	}
-
 	show() {
 
-		setStyle(this.container, {
+		setStyle(this.div, {
 			"visibility": "visible"
 		})
 		this.visible = true
@@ -63,7 +63,16 @@ export class SearchHistory {
 
 	update() {
 
-		removeChildrenOf(this.container)
+		removeChildrenOf(this.div)
+
+		let header = document.createElement("h2")
+		setStyle(header, {
+			"color": "white"
+		})
+		setAttributes(header, {
+			"innerHTML": "Search history"
+		})
+		this.div.appendChild(header)
 
 		if (this.searches.length == 0) {
 
@@ -73,7 +82,7 @@ export class SearchHistory {
 
 		for (let search of this.searches) {
 
-
+			this.addParagraph(search.label, search.url)
 		}
 	}
 }

@@ -1,11 +1,13 @@
 import { AppImage } from "./AppImage"
-import { drawText, toCharacter } from "./util"
+import { Container } from "./Container"
+import { drawText, removeChildrenOf, setAttributes, setStyle, toCharacter } from "./util"
 
-export class ImageViewer {
+export class ImageViewer extends Container {
 
-	canvas: HTMLCanvasElement
+	canvas = document.createElement("canvas")
 	ctx: CanvasRenderingContext2D
 	currentImage?: AppImage
+	footerDiv = document.createElement("div")
 	imageDimensions = {
 		h: 0,
 		w: 0,
@@ -16,8 +18,16 @@ export class ImageViewer {
 
 	constructor() {
 
-		this.canvas = document.createElement("canvas")
+		super()
 		this.ctx = this.canvas.getContext("2d")!
+		this.div.appendChild(this.canvas)
+		this.div.appendChild(this.footerDiv)
+		this.updateSize()
+		setStyle(this.footerDiv, {
+			"background": "black",
+			"bottom": "0",
+			"position": "absolute"
+		})
 	}
 
 	draw() {
@@ -60,6 +70,8 @@ export class ImageViewer {
 		if (this.showGrid) {
 			this.drawGrid()
 		}
+
+		this.setText(this.currentImage!.options.authorName, this.currentImage!.options.sourceUrl)
 	}
 
 	drawGrid() {
@@ -114,10 +126,23 @@ export class ImageViewer {
 		drawText(this.ctx, `Loading "${this.currentImage!.options.name}" ...`, 100, 100)
 	}
 
-	initialize() {
+	setText(text: string, link: string) {
 
-		document.body.appendChild(this.canvas)
-		this.updateSize()
+		removeChildrenOf(this.footerDiv)
+		let aElement = document.createElement("a")
+		setAttributes(aElement, {
+			"href": link,
+			"innerHTML": text
+		})
+		setStyle(aElement, {
+			"color": "white"
+		})
+		let pElement = document.createElement("p")
+		setStyle(pElement, {
+			"margin": "0.5em"
+		})
+		pElement.appendChild(aElement)
+		this.footerDiv.appendChild(pElement)
 	}
 
 	updateSize() {

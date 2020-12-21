@@ -1,13 +1,12 @@
 import { AppImage } from "./AppImage"
 import { AppState } from "./AppState"
-import { Footer } from "./Footer"
 import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
 import { MenuAction } from "./MenuAction"
 import { SearchHistory } from "./SearchHistory"
 import { Timer } from "./Timer"
 import { images, ImageDataObj } from "./images"
-import { clearDocument, ipIsLocalhost, removeChildrenOf, setAttributes, setStyle } from "./util"
+import { clearDocument, ipIsLocalhost, setAttributes, setStyle } from "./util"
 
 export class App {
 
@@ -16,7 +15,6 @@ export class App {
 	static readonly RESIZE_TIMER_MS = 100
 
 	appImages: AppImage[] = []
-	footer = new Footer()
 	headerHidden = false
 	headerHidingTimer: Timer
 	hotkeys: Map<string, () => void> = new Map()
@@ -46,6 +44,31 @@ export class App {
 		)
 
 		this.searchInput = document.createElement("input")
+
+		clearDocument()
+		this.fixStyle()
+		window.addEventListener("resize", () => {
+			this.resizeTimer.reset()
+		})
+		this.populateMenu()
+		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
+		window.addEventListener("mousemove", () => {
+			if (this.headerHidden) {
+				this.menu.show()
+				this.headerHidden = false
+			}
+			this.headerHidingTimer.reset()
+		})
+		this.headerHidingTimer.reset()
+		window.addEventListener("beforeunload", () => {
+			this.saveState()
+		})
+		this.loadState()
+		this.parseSearchParams()
+		document.body.appendChild(this.imageViewer.div)
+		this.imageViewer.draw()
+		document.body.appendChild(this.searchHistory.div)
+		this.searchHistory.update()
 	}
 
 	addImageOption(io: ImageDataObj) {
@@ -92,6 +115,11 @@ export class App {
 			let url = `escape from tarkov ${searchInputValue}`
 			url = url.replace(/ /g, "+")
 			url = `http://www.google.com/search?q=${url}`
+			this.searchHistory.searches.push({
+				label: searchInputValue,
+				url: url
+			})
+			this.searchHistory.update()
 			window.open(url)
 		})
 		this.menu.container.appendChild(this.searchInput)
@@ -106,35 +134,6 @@ export class App {
 			"margin": "0px",
 			"overflow": "hidden"
 		})
-	}
-
-	initialize() {
-
-		clearDocument()
-		this.fixStyle()
-		window.addEventListener("resize", () => {
-			this.resizeTimer.reset()
-		})
-		this.imageViewer.initialize()
-		this.populateMenu()
-		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
-		window.addEventListener("mousemove", () => {
-			if (this.headerHidden) {
-				this.menu.show()
-				this.headerHidden = false
-			}
-			this.headerHidingTimer.reset()
-		})
-		this.headerHidingTimer.reset()
-		this.footer.initialize()
-		window.addEventListener("beforeunload", () => {
-			this.saveState()
-		})
-		this.loadState()
-		this.parseSearchParams()
-		this.imageViewer.draw()
-		this.searchHistory.update()
-		this.searchHistory.initialize()
 	}
 
 	loadState() {
@@ -152,6 +151,10 @@ export class App {
 				}
 			}
 		}
+		for (let search of state.searches) {
+			this.searchHistory.searches.push(search)
+		}
+		this.searchHistory.update()
 	}
 
 	onKey(key: string) {
@@ -204,6 +207,20 @@ export class App {
 			label: "Grid"
 		})
 
+		this.addMenuAction({
+			action: () => {
+				if (this.imageViewer.visible) {
+					this.imageViewer.hide()
+					this.searchHistory.show()
+				} else {
+					this.imageViewer.show()
+					this.searchHistory.hide()
+				}
+			},
+			hotkey: "h",
+			label: "S. history"
+		})
+
 		this.addSearchBar()
 
 		if (ipIsLocalhost(window.location.hostname)) {
@@ -222,7 +239,7 @@ export class App {
 		let state: AppState = {
 			currentImageName: this.imageViewer.currentImage!.options.name,
 			gridEnabled: this.imageViewer.showGrid,
-			searches: []
+			searches: this.searchHistory.searches
 		}
 		let json = JSON.stringify(state)
 		localStorage.setItem(App.LOCALSTORAGE_ITEM_NAME, json)
@@ -232,7 +249,6 @@ export class App {
 
 		this.imageViewer.currentImage = image
 		this.imageViewer.draw()
-		this.footer.setText(image.options.authorName, image.options.sourceUrl)
 		image.load()
 	}
 }
