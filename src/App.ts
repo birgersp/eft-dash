@@ -46,6 +46,9 @@ export class App {
 		this.searchInput = document.createElement("input")
 
 		clearDocument()
+		document.body.appendChild(this.menu.div)
+		document.body.appendChild(this.imageViewer.div)
+		document.body.appendChild(this.searchHistory.div)
 		this.fixStyle()
 		window.addEventListener("resize", () => {
 			this.resizeTimer.reset()
@@ -65,9 +68,7 @@ export class App {
 		})
 		this.loadState()
 		this.parseSearchParams()
-		document.body.appendChild(this.imageViewer.div)
 		this.imageViewer.draw()
-		document.body.appendChild(this.searchHistory.div)
 		this.searchHistory.update()
 	}
 
@@ -122,7 +123,7 @@ export class App {
 			this.searchHistory.update()
 			window.open(url)
 		})
-		this.menu.container.appendChild(this.searchInput)
+		this.menu.div.appendChild(this.searchInput)
 		this.hotkeys.set("s", () => {
 			this.searchInput.focus()
 		})

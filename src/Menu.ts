@@ -1,15 +1,15 @@
+import { Container } from "./Container"
 import { setAttributes, setStyle } from "./util"
 
-export class Menu {
+export class Menu extends Container {
 
-	container: HTMLDivElement
 	hasMouseOver = false
 
 	constructor() {
 
-		this.container = document.createElement("div")
-		this.container.addEventListener("mouseover", () => { this.hasMouseOver = true })
-		this.container.addEventListener("mouseout", () => { this.hasMouseOver = false })
+		super()
+		this.div.addEventListener("mouseover", () => { this.hasMouseOver = true })
+		this.div.addEventListener("mouseout", () => { this.hasMouseOver = false })
 	}
 
 	addButton(label: string, action: () => void) {
@@ -22,29 +22,14 @@ export class Menu {
 		button.addEventListener("click", () => {
 			action()
 		})
-		this.container.appendChild(button)
-	}
-
-	hide() {
-
-		setStyle(this.container, {
-			"visibility": "hidden"
-		})
+		this.div.appendChild(button)
 	}
 
 	initialize() {
 
-		setStyle(this.container, {
+		setStyle(this.div, {
 			"position": "absolute",
 			"top": "0"
-		})
-		document.body.appendChild(this.container)
-	}
-
-	show() {
-
-		setStyle(this.container, {
-			"visibility": "visible"
 		})
 	}
 }

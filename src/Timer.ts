@@ -8,10 +8,17 @@ export class Timer {
 	) {
 	}
 
-	reset() {
+	clear() {
 		if (this.timeoutId != undefined) {
 			window.clearTimeout(this.timeoutId)
 		}
-		this.timeoutId = window.setTimeout(() => { this.action() }, this.timeMs)
+	}
+
+	reset() {
+		this.clear()
+		this.timeoutId = window.setTimeout(() => {
+			this.timeoutId = undefined
+			this.action()
+		}, this.timeMs)
 	}
 }
