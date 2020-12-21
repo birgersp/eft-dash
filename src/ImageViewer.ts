@@ -1,4 +1,5 @@
 import { AppImage } from "./AppImage"
+import { common } from "./common"
 import { Container } from "./Container"
 import { drawText, removeChildrenOf, setAttributes, setStyle, toCharacter } from "./util"
 
@@ -26,7 +27,7 @@ export class ImageViewer extends Container {
 		this.div.appendChild(this.footerDiv)
 		this.updateSize()
 		setStyle(this.footerDiv, {
-			"background": "black",
+			"background": common.BG_COLOR,
 			"bottom": "0",
 			"position": "absolute"
 		})
