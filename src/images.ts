@@ -37,22 +37,29 @@ images.push({
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
-	authorName: "Marvelin",
+	authorName: "JustaMapman",
 	hotkey: "5",
+	image: "ReserveComboMap.png",
+	name: "Reserve",
+	sourceUrl: "https://escapefromtarkov.gamepedia.com/File:ReserveComboMap.png"
+})
+images.push({
+	authorName: "Marvelin",
+	hotkey: "6",
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg",
 	name: "Dorms, Customs",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
 	authorName: "Marvelin",
-	hotkey: "6",
+	hotkey: "7",
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg",
 	name: "Resort, Shoreline",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
 	authorName: "u/Lorathor6",
-	hotkey: "7",
+	hotkey: "8",
 	image: "https://i.redd.it/bqftzweimvx31.png",
 	name: "Interchange",
 	sourceUrl: "https://www.reddit.com/r/EscapefromTarkov/comments/8gixyg/interchange_map_incl_loot_and_keys"

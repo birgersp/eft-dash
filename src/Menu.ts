@@ -10,6 +10,11 @@ export class Menu extends Container {
 		super()
 		this.div.addEventListener("mouseover", () => { this.hasMouseOver = true })
 		this.div.addEventListener("mouseout", () => { this.hasMouseOver = false })
+
+		setStyle(this.div, {
+			"position": "absolute",
+			"top": "0"
+		})
 	}
 
 	addButton(label: string, action: () => void) {
@@ -23,13 +28,5 @@ export class Menu extends Container {
 			action()
 		})
 		this.div.appendChild(button)
-	}
-
-	initialize() {
-
-		setStyle(this.div, {
-			"position": "absolute",
-			"top": "0"
-		})
 	}
 }

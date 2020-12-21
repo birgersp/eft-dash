@@ -15,7 +15,6 @@ export class App {
 	static readonly RESIZE_TIMER_MS = 100
 
 	appImages: AppImage[] = []
-	headerHidden = false
 	headerHidingTimer: Timer
 	hotkeys: Map<string, () => void> = new Map()
 	imageViewer = new ImageViewer()
@@ -29,17 +28,18 @@ export class App {
 
 		this.resizeTimer = new Timer(
 			App.RESIZE_TIMER_MS,
-			() => { this.imageViewer.updateSize() }
+			() => {
+				this.updateSize()
+			}
 		)
 
 		this.headerHidingTimer = new Timer(
 			App.HEADER_HIDING_TIMER_MS,
 			() => {
-				if (this.headerHidden || this.menu.hasMouseOver || this.searchBarFocused) {
+				if ((!this.menu.visible) || this.menu.hasMouseOver || this.searchBarFocused || this.searchHistory.visible) {
 					return
 				}
 				this.menu.hide()
-				this.headerHidden = true
 			}
 		)
 
@@ -56,16 +56,18 @@ export class App {
 		this.populateMenu()
 		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
 		window.addEventListener("mousemove", () => {
-			if (this.headerHidden) {
+			if (!this.menu.visible) {
 				this.menu.show()
-				this.headerHidden = false
 			}
-			this.headerHidingTimer.reset()
+			if (!this.searchHistory.visible) {
+				this.headerHidingTimer.reset()
+			}
 		})
 		this.headerHidingTimer.reset()
 		window.addEventListener("beforeunload", () => {
 			this.saveState()
 		})
+		this.updateSize()
 		this.loadState()
 		this.parseSearchParams()
 		this.imageViewer.draw()
@@ -125,6 +127,7 @@ export class App {
 		})
 		this.menu.div.appendChild(this.searchInput)
 		this.hotkeys.set("s", () => {
+			this.searchInput.value = ""
 			this.searchInput.focus()
 		})
 	}
@@ -162,9 +165,8 @@ export class App {
 
 		this.headerHidingTimer.reset()
 
-		if (this.headerHidden) {
+		if (!this.menu.visible) {
 			this.menu.show()
-			this.headerHidden = false
 		}
 
 		if (this.searchBarFocused) {
@@ -194,7 +196,6 @@ export class App {
 
 	populateMenu() {
 
-		this.menu.initialize()
 		for (let io of images) {
 			this.addImageOption(io)
 		}
@@ -252,5 +253,13 @@ export class App {
 		this.imageViewer.currentImage = image
 		this.imageViewer.draw()
 		image.load()
+	}
+
+	updateSize() {
+
+		this.imageViewer.updateSize()
+		setStyle(this.searchHistory.div, {
+			"top": `${this.menu.div.getBoundingClientRect().height}px`
+		})
 	}
 }
