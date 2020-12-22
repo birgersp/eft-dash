@@ -1,6 +1,6 @@
 import { Container } from "./Container"
 import { Elem } from "./Elem"
-import { setAttributes, setStyle } from "./util"
+import { common } from "./common"
 
 export class Menu extends Container {
 
@@ -14,8 +14,12 @@ export class Menu extends Container {
 			.on("mouseover", () => { this.hasMouseOver = true })
 			.on("mouseout", () => { this.hasMouseOver = false })
 		this.div.style({
+			"background": common.BG_COLOR,
+			"overflow-y": "auto",
+			"padding": "1em",
 			"position": "absolute",
-			"top": "0"
+			"top": "0",
+			"width": common.MENU_WIDTH
 		})
 	}
 
@@ -24,9 +28,15 @@ export class Menu extends Container {
 		new Elem("input")
 			.set({
 				"type": "button",
-				"value": label
+				"value": label,
+			})
+			.style({
+				"width": "100%"
 			})
 			.on("click", action)
+			.appendTo(this.div)
+
+		new Elem("br")
 			.appendTo(this.div)
 	}
 }

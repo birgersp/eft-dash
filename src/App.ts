@@ -45,7 +45,11 @@ export class App {
 		)
 
 		clearDocument()
-		appendTo(document.body, this.menu.div.element, this.imageViewer.div.element, this.searchHistory.div.element)
+		appendTo(document.body,
+			this.imageViewer.div.element,
+			this.searchHistory.div.element,
+			this.menu.div.element,
+		)
 		this.fixStyle()
 		window.addEventListener("resize", () => {
 			this.resizeTimer.reset()
