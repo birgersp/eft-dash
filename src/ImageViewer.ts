@@ -1,16 +1,17 @@
 import { AppImage } from "./AppImage"
-import { common } from "./common"
 import { Container } from "./Container"
+import { Elem } from "./Elem"
+import { common } from "./common"
 import { drawText, removeChildrenOf, setAttributes, setStyle, toCharacter } from "./util"
 
 export class ImageViewer extends Container {
 
 	static readonly GRID_RESOLUTION = 9
 
-	canvas = document.createElement("canvas")
+	canvas = new Elem("canvas")
 	ctx: CanvasRenderingContext2D
 	currentImage?: AppImage
-	footerDiv = document.createElement("div")
+	footerDiv = new Elem("div")
 	imageDimensions = {
 		h: 0,
 		w: 0,
@@ -22,11 +23,11 @@ export class ImageViewer extends Container {
 	constructor() {
 
 		super()
-		this.ctx = this.canvas.getContext("2d")!
-		this.div.appendChild(this.canvas)
-		this.div.appendChild(this.footerDiv)
+		this.ctx = this.canvas.element.getContext("2d")!
+		this.div.append(this.canvas)
+		this.div.append(this.footerDiv)
 		this.updateSize()
-		setStyle(this.footerDiv, {
+		this.footerDiv.style({
 			"background": common.BG_COLOR,
 			"bottom": "0",
 			"position": "absolute"
@@ -44,7 +45,9 @@ export class ImageViewer extends Container {
 		this.ctx.strokeStyle = "black"
 		this.ctx.lineWidth = 2
 
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+		let cw = this.canvas.element.width
+		let ch = this.canvas.element.height
+		this.ctx.clearRect(0, 0, cw, ch)
 		if (!this.currentImage!.loaded) {
 			this.drawLoadingText()
 			return
@@ -52,17 +55,17 @@ export class ImageViewer extends Container {
 
 		let img = this.currentImage!.image
 		let ar = img.width / img.height
-		let canvasAr = this.canvas.width / this.canvas.height
+		let canvasAr = cw / ch
 		if (canvasAr > ar) {
-			this.imageDimensions.h = this.canvas.height
+			this.imageDimensions.h = ch
 			this.imageDimensions.w = this.imageDimensions.h * ar
-			this.imageDimensions.x = (this.canvas.width - this.imageDimensions.w) / 2
+			this.imageDimensions.x = (cw - this.imageDimensions.w) / 2
 			this.imageDimensions.y = 0
 		} else {
-			this.imageDimensions.w = this.canvas.width
+			this.imageDimensions.w = cw
 			this.imageDimensions.h = this.imageDimensions.w / ar
 			this.imageDimensions.x = 0
-			this.imageDimensions.y = (this.canvas.height - this.imageDimensions.h) / 2
+			this.imageDimensions.y = (ch - this.imageDimensions.h) / 2
 		}
 		this.ctx.drawImage(
 			this.currentImage!.image,
@@ -131,27 +134,27 @@ export class ImageViewer extends Container {
 
 	setText(text: string, link: string) {
 
-		removeChildrenOf(this.footerDiv)
-		let aElement = document.createElement("a")
-		setAttributes(aElement, {
+		this.footerDiv.removeChildren()
+		let aElement = new Elem("a")
+		aElement.set({
 			"href": link,
 			"innerHTML": text
 		})
-		setStyle(aElement, {
+		aElement.style({
 			"color": "white"
 		})
-		let pElement = document.createElement("p")
-		setStyle(pElement, {
+		let pElement = new Elem("p")
+		pElement.style({
 			"margin": "0.5em"
 		})
-		pElement.appendChild(aElement)
-		this.footerDiv.appendChild(pElement)
+		pElement.append(aElement)
+		this.footerDiv.append(pElement)
 	}
 
 	updateSize() {
 
-		this.canvas.width = window.innerWidth
-		this.canvas.height = window.innerHeight
+		this.canvas.element.width = window.innerWidth
+		this.canvas.element.height = window.innerHeight
 		this.draw()
 	}
 }

@@ -1,3 +1,5 @@
+import { removeChildrenOf } from "./util"
+
 export class Elem<K extends keyof HTMLElementTagNameMap> {
 
 	element: HTMLElementTagNameMap[K]
@@ -7,10 +9,27 @@ export class Elem<K extends keyof HTMLElementTagNameMap> {
 		this.element = document.createElement(tagName)
 	}
 
-	appendTo(element: HTMLElement): Elem<K> {
+	append(child: Elem<any>): Elem<K> {
 
-		element.appendChild(this.element)
+		this.element.appendChild(child.element)
 		return this
+	}
+
+	appendTo(parent: Elem<any>): Elem<K> {
+
+		parent.element.appendChild(this.element)
+		return this
+	}
+
+	on<T extends keyof HTMLElementEventMap>(type: T, listener: (this: HTMLElement, ev: HTMLElementEventMap[T]) => any, options?: boolean | AddEventListenerOptions) {
+
+		this.element.addEventListener(type, listener as EventListenerOrEventListenerObject)
+		return this
+	}
+
+	removeChildren() {
+
+		removeChildrenOf(this.element)
 	}
 
 	set(attributes: any): Elem<K> {

@@ -1,23 +1,20 @@
+import { Elem } from "./Elem"
 import { setStyle } from "./util"
 
 export class Container {
 
-	div = document.createElement("div")
+	div = new Elem("div")
 	visible = true
 
 	hide() {
 
-		setStyle(this.div, {
-			"visibility": "hidden"
-		})
+		this.div.style({ "visibility": "hidden" })
 		this.visible = false
 	}
 
 	show() {
 
-		setStyle(this.div, {
-			"visibility": "visible"
-		})
+		this.div.style({ "visibility": "visible" })
 		this.visible = true
 	}
 }

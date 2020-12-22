@@ -15,7 +15,7 @@ export class SearchHistory extends Container {
 	constructor() {
 
 		super()
-		setStyle(this.div, {
+		this.div.style({
 			"color": "white",
 			"margin": "2em",
 			"position": "absolute",
@@ -27,28 +27,28 @@ export class SearchHistory extends Container {
 
 	addParagraph(text: string, link?: string) {
 
-		let p = document.createElement("p")
-		setStyle(p, {
+		let p = new Elem("p")
+		p.style({
 			"margin": "0px"
 		})
 		if (link != undefined) {
-			let a = document.createElement("a")
-			setAttributes(a, {
+			let a = new Elem("a")
+			a.set({
 				"href": link,
 				"innerHTML": text
 			})
-			p.appendChild(a)
+			p.append(a)
 		} else {
-			setAttributes(p, {
+			p.set({
 				"innerHTML": text
 			})
 		}
-		this.div.appendChild(p)
+		this.div.append(p)
 	}
 
 	hide() {
 
-		setStyle(this.div, {
+		this.div.style({
 			"visibility": "hidden"
 		})
 		this.visible = false
@@ -56,7 +56,7 @@ export class SearchHistory extends Container {
 
 	show() {
 
-		setStyle(this.div, {
+		this.div.style({
 			"visibility": "visible"
 		})
 		this.visible = true
@@ -64,16 +64,16 @@ export class SearchHistory extends Container {
 
 	update() {
 
-		removeChildrenOf(this.div)
+		this.div.removeChildren()
 
-		let header = document.createElement("h2")
-		setStyle(header, {
+		let header = new Elem("h2")
+		header.style({
 			"color": "white"
 		})
-		setAttributes(header, {
+		header.set({
 			"innerHTML": "Search history"
 		})
-		this.div.appendChild(header)
+		this.div.append(header)
 
 		if (this.searches.length == 0) {
 

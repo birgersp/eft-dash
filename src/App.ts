@@ -1,5 +1,6 @@
 import { AppImage } from "./AppImage"
 import { AppState } from "./AppState"
+import { Elem } from "./Elem"
 import { ImageViewer } from "./ImageViewer"
 import { Menu } from "./Menu"
 import { MenuAction } from "./MenuAction"
@@ -22,7 +23,7 @@ export class App {
 	resizeTimer: Timer
 	searchBarFocused = false
 	searchHistory = new SearchHistory()
-	searchInput: HTMLInputElement
+	searchInput = new Elem("input")
 
 	constructor() {
 
@@ -43,10 +44,8 @@ export class App {
 			}
 		)
 
-		this.searchInput = document.createElement("input")
-
 		clearDocument()
-		appendTo(document.body, this.menu.div, this.imageViewer.div, this.searchHistory.div)
+		appendTo(document.body, this.menu.div.element, this.imageViewer.div.element, this.searchHistory.div.element)
 		this.fixStyle()
 		window.addEventListener("resize", () => {
 			this.resizeTimer.reset()
@@ -102,17 +101,17 @@ export class App {
 
 	addSearchBar() {
 
-		setAttributes(this.searchInput, {
+		this.searchInput.set({
 			"placeholder": "(s)Search"
 		})
-		this.searchInput.addEventListener("focus", () => { this.searchBarFocused = true })
-		this.searchInput.addEventListener("blur", () => {
+		this.searchInput.on("focus", () => { this.searchBarFocused = true })
+		this.searchInput.on("blur", () => {
 			this.searchBarFocused = false
 			this.headerHidingTimer.reset()
 		})
-		this.searchInput.addEventListener("keypress", (evt) => {
+		this.searchInput.on("keypress", (evt) => {
 			if (evt.key != "Enter") { return }
-			let searchInputValue = this.searchInput.value
+			let searchInputValue = this.searchInput.element.value
 			let url = `escape from tarkov ${searchInputValue}`
 			url = url.replace(/ /g, "+")
 			url = `http://www.google.com/search?q=${url}`
@@ -123,10 +122,10 @@ export class App {
 			this.searchHistory.update()
 			window.open(url)
 		})
-		this.menu.div.appendChild(this.searchInput)
+		this.menu.div.append(this.searchInput)
 		this.hotkeys.set("s", () => {
-			this.searchInput.value = ""
-			this.searchInput.focus()
+			this.searchInput.element.value = ""
+			this.searchInput.element.focus()
 		})
 	}
 
@@ -169,7 +168,7 @@ export class App {
 
 		if (this.searchBarFocused) {
 			if (key == "Escape") {
-				this.searchInput.blur()
+				this.searchInput.element.blur()
 			}
 			return
 		}
@@ -256,8 +255,8 @@ export class App {
 	updateSize() {
 
 		this.imageViewer.updateSize()
-		setStyle(this.searchHistory.div, {
-			"top": `${this.menu.div.getBoundingClientRect().height}px`
+		this.searchHistory.div.style({
+			"top": `${this.menu.div.element.getBoundingClientRect().height}px`
 		})
 	}
 }

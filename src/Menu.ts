@@ -1,4 +1,5 @@
 import { Container } from "./Container"
+import { Elem } from "./Elem"
 import { setAttributes, setStyle } from "./util"
 
 export class Menu extends Container {
@@ -8,10 +9,11 @@ export class Menu extends Container {
 	constructor() {
 
 		super()
-		this.div.addEventListener("mouseover", () => { this.hasMouseOver = true })
-		this.div.addEventListener("mouseout", () => { this.hasMouseOver = false })
 
-		setStyle(this.div, {
+		this.div
+			.on("mouseover", () => { this.hasMouseOver = true })
+			.on("mouseout", () => { this.hasMouseOver = false })
+		this.div.style({
 			"position": "absolute",
 			"top": "0"
 		})
@@ -19,14 +21,12 @@ export class Menu extends Container {
 
 	addButton(label: string, action: () => void) {
 
-		let button = document.createElement("input")
-		setAttributes(button, {
-			"type": "button",
-			"value": label
-		})
-		button.addEventListener("click", () => {
-			action()
-		})
-		this.div.appendChild(button)
+		new Elem("input")
+			.set({
+				"type": "button",
+				"value": label
+			})
+			.on("click", action)
+			.appendTo(this.div)
 	}
 }
