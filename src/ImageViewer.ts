@@ -30,7 +30,8 @@ export class ImageViewer extends Container {
 		this.footerDiv.style({
 			"background": common.BG_COLOR,
 			"bottom": "0",
-			"position": "absolute"
+			"position": "absolute",
+			"right": "0"
 		})
 	}
 
