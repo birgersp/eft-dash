@@ -105,27 +105,31 @@ export class App {
 
 	addSearchBar() {
 
-		this.searchInput.set({
-			"placeholder": "(s)Search"
-		})
-		this.searchInput.on("focus", () => { this.searchBarFocused = true })
-		this.searchInput.on("blur", () => {
-			this.searchBarFocused = false
-			this.headerHidingTimer.reset()
-		})
-		this.searchInput.on("keypress", (evt) => {
-			if (evt.key != "Enter") { return }
-			let searchInputValue = this.searchInput.element.value
-			let url = `escape from tarkov ${searchInputValue}`
-			url = url.replace(/ /g, "+")
-			url = `http://www.google.com/search?q=${url}`
-			this.searchHistory.searches.push({
-				label: searchInputValue,
-				url: url
+		this.searchInput
+			.set({
+				"placeholder": "(s)Search"
 			})
-			this.searchHistory.update()
-			window.open(url)
-		})
+			.style({
+				"width": "100%"
+			})
+			.on("focus", () => { this.searchBarFocused = true })
+			.on("blur", () => {
+				this.searchBarFocused = false
+				this.headerHidingTimer.reset()
+			})
+			.on("keypress", (evt) => {
+				if (evt.key != "Enter") { return }
+				let searchInputValue = this.searchInput.element.value
+				let url = `escape from tarkov ${searchInputValue}`
+				url = url.replace(/ /g, "+")
+				url = `http://www.google.com/search?q=${url}`
+				this.searchHistory.searches.push({
+					label: searchInputValue,
+					url: url
+				})
+				this.searchHistory.update()
+				window.open(url)
+			})
 		this.menu.div.append(this.searchInput)
 		this.hotkeys.set("s", () => {
 			this.searchInput.element.value = ""
@@ -223,8 +227,6 @@ export class App {
 			label: "S. history"
 		})
 
-		this.addSearchBar()
-
 		if (ipIsLocalhost(window.location.hostname)) {
 			this.addImageOption({
 				authorName: "birgersp",
@@ -234,6 +236,8 @@ export class App {
 				sourceUrl: "http://birgersp.no"
 			})
 		}
+
+		this.addSearchBar()
 	}
 
 	saveState() {
@@ -260,7 +264,7 @@ export class App {
 
 		this.imageViewer.updateSize()
 		this.searchHistory.div.style({
-			"top": `${this.menu.div.element.getBoundingClientRect().height}px`
+			"left": `${this.menu.div.element.getBoundingClientRect().width}px`
 		})
 	}
 }
