@@ -1,8 +1,9 @@
 import { AppImage } from "./AppImage"
 import { Container } from "./Container"
 import { Elem } from "./Elem"
+import { Signal } from "./Signal"
 import { common } from "./common"
-import { drawText, removeChildrenOf, setAttributes, setStyle, toCharacter } from "./util"
+import { drawText, toCharacter } from "./util"
 
 export class ImageViewer extends Container {
 
@@ -18,15 +19,18 @@ export class ImageViewer extends Container {
 		x: 0,
 		y: 0
 	}
+	onImageChanged = new Signal()
+	onLoading = new Signal()
 	showGrid = false
 
 	constructor() {
 
 		super()
 		this.ctx = this.canvas.element.getContext("2d")!
-		this.div.append(this.canvas)
-		this.div.append(this.footerDiv)
-		this.updateSize()
+		this.div
+			.style({ "position": "absolute" })
+			.append(this.canvas)
+			.append(this.footerDiv)
 		this.footerDiv.style({
 			"background": common.BG_COLOR,
 			"bottom": "0",
@@ -41,6 +45,8 @@ export class ImageViewer extends Container {
 			return
 		}
 
+		this.updateSize()
+
 		this.ctx.font = "bold 2em arial"
 		this.ctx.fillStyle = "white"
 		this.ctx.strokeStyle = "black"
@@ -50,24 +56,11 @@ export class ImageViewer extends Container {
 		let ch = this.canvas.element.height
 		this.ctx.clearRect(0, 0, cw, ch)
 		if (!this.currentImage!.loaded) {
+			this.onLoading.trigger()
 			this.drawLoadingText()
 			return
 		}
 
-		let img = this.currentImage!.image
-		let ar = img.width / img.height
-		let canvasAr = cw / ch
-		if (canvasAr > ar) {
-			this.imageDimensions.h = ch
-			this.imageDimensions.w = this.imageDimensions.h * ar
-			this.imageDimensions.x = (cw - this.imageDimensions.w) / 2
-			this.imageDimensions.y = 0
-		} else {
-			this.imageDimensions.w = cw
-			this.imageDimensions.h = this.imageDimensions.w / ar
-			this.imageDimensions.x = 0
-			this.imageDimensions.y = (ch - this.imageDimensions.h) / 2
-		}
 		this.ctx.drawImage(
 			this.currentImage!.image,
 			this.imageDimensions.x, this.imageDimensions.y,
@@ -79,6 +72,7 @@ export class ImageViewer extends Container {
 		}
 
 		this.setText(this.currentImage!.options.authorName, this.currentImage!.options.sourceUrl)
+		this.onImageChanged.trigger()
 	}
 
 	drawGrid() {
@@ -154,8 +148,25 @@ export class ImageViewer extends Container {
 
 	updateSize() {
 
-		this.canvas.element.width = window.innerWidth
-		this.canvas.element.height = window.innerHeight
-		this.draw()
+		if (this.currentImage == undefined ||
+			!this.currentImage!.loaded) {
+			return
+		}
+
+		let ar = this.currentImage!.ar
+		let cw = this.canvas.element.width
+		let ch = this.canvas.element.height
+		let canvasAr = cw / ch
+		if (canvasAr > ar) {
+			this.imageDimensions.h = ch
+			this.imageDimensions.w = this.imageDimensions.h * ar
+			this.imageDimensions.x = (cw - this.imageDimensions.w) / 2
+			this.imageDimensions.y = 0
+		} else {
+			this.imageDimensions.w = cw
+			this.imageDimensions.h = this.imageDimensions.w / ar
+			this.imageDimensions.x = 0
+			this.imageDimensions.y = (ch - this.imageDimensions.h) / 2
+		}
 	}
 }

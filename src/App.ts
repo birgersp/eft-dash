@@ -20,6 +20,7 @@ export class App {
 	hotkeys: Map<string, () => void> = new Map()
 	imageViewer = new ImageViewer()
 	menu = new Menu()
+	menuShouldAutoHide = false
 	resizeTimer: Timer
 	searchBarFocused = false
 	searchHistory = new SearchHistory()
@@ -30,18 +31,18 @@ export class App {
 		this.resizeTimer = new Timer(
 			App.RESIZE_TIMER_MS,
 			() => {
-				this.updateSize()
+				this.checkResetHidingTimer()
+
+				this.updateCanvasSize()
+				if (this.imageViewer.visible) {
+					this.imageViewer.draw()
+				}
 			}
 		)
 
 		this.headerHidingTimer = new Timer(
 			App.HEADER_HIDING_TIMER_MS,
-			() => {
-				if ((!this.menu.visible) || this.menu.hasMouseOver || this.searchBarFocused || this.searchHistory.visible) {
-					return
-				}
-				this.menu.hide()
-			}
+			() => { this.checkMenuShouldAutoHide() }
 		)
 
 		clearDocument()
@@ -51,35 +52,29 @@ export class App {
 			this.menu.div.element,
 		)
 		this.fixStyle()
-		window.addEventListener("resize", () => {
-			this.resizeTimer.reset()
-		})
-		this.populateMenu()
+		window.addEventListener("resize", () => { this.resizeTimer.reset() })
 		window.addEventListener("keyup", (evt) => { this.onKey(evt.key) })
-		window.addEventListener("mousemove", () => {
-			if (!this.menu.visible) {
-				this.menu.show()
-			}
-			if (!this.searchHistory.visible) {
-				this.headerHidingTimer.reset()
-			}
-		})
-		this.headerHidingTimer.reset()
-		window.addEventListener("beforeunload", () => {
-			this.saveState()
-		})
-		this.updateSize()
+		window.addEventListener("mousemove", () => { this.checkResetHidingTimer() })
+		window.addEventListener("beforeunload", () => { this.saveState() })
+		this.populateMenu()
 		this.loadState()
+		this.updateCanvasSize()
 		this.parseSearchParams()
 		this.imageViewer.draw()
 		this.searchHistory.update()
+		this.headerHidingTimer.reset()
+		this.searchHistory.div.style({
+			"left": `${this.menu.div.element.getBoundingClientRect().width}px`
+		})
 	}
 
 	addImageOption(io: ImageDataObj) {
 
 		let image = new AppImage(io, () => {
 			if (this.imageViewer.currentImage == image) {
+				this.updateCanvasSize()
 				this.imageViewer.draw()
+				this.checkResetHidingTimer()
 			}
 		})
 		this.appImages.push(image)
@@ -137,6 +132,29 @@ export class App {
 		})
 	}
 
+	checkMenuShouldAutoHide() {
+
+		if (this.menu.visible &&
+			this.imageViewer.visible &&
+			this.menuShouldAutoHide &&
+			!this.menu.hasMouseOver &&
+			!this.searchBarFocused &&
+			!this.searchHistory.visible) {
+			this.menu.hide()
+		}
+	}
+
+	checkResetHidingTimer() {
+
+		if (!this.menu.visible) {
+			this.menu.show()
+		}
+
+		if (this.menuShouldAutoHide) {
+			this.headerHidingTimer.reset()
+		}
+	}
+
 	fixStyle() {
 
 		setStyle(document.body, {
@@ -156,7 +174,9 @@ export class App {
 		if (this.imageViewer.currentImage == undefined) {
 			for (let image of this.appImages) {
 				if (image.options.name == state.currentImageName) {
-					this.selectImage(image)
+					this.imageViewer.currentImage = image
+					image.load()
+					break
 				}
 			}
 		}
@@ -168,12 +188,6 @@ export class App {
 
 	onKey(key: string) {
 
-		this.headerHidingTimer.reset()
-
-		if (!this.menu.visible) {
-			this.menu.show()
-		}
-
 		if (this.searchBarFocused) {
 			if (key == "Escape") {
 				this.searchInput.element.blur()
@@ -183,6 +197,8 @@ export class App {
 
 		let action = this.hotkeys.get(key)
 		action?.()
+
+		this.checkResetHidingTimer()
 	}
 
 	parseSearchParams() {
@@ -253,18 +269,40 @@ export class App {
 
 	selectImage(image: AppImage) {
 
-		this.searchHistory.hide()
-		this.imageViewer.show()
+		if (this.searchHistory.visible) {
+			this.searchHistory.hide()
+		}
+		if (!this.imageViewer.visible) {
+			this.imageViewer.show()
+		}
 		this.imageViewer.currentImage = image
-		this.imageViewer.draw()
+		this.updateCanvasSize()
 		image.load()
+		this.imageViewer.draw()
+		this.checkResetHidingTimer()
 	}
 
-	updateSize() {
+	updateCanvasSize() {
 
-		this.imageViewer.updateSize()
-		this.searchHistory.div.style({
-			"left": `${this.menu.div.element.getBoundingClientRect().width}px`
-		})
+		let menuWidth = this.menu.div.element.getBoundingClientRect().width
+		let canvasX: number
+		let canvasW = window.innerWidth - menuWidth
+		let canvasH = window.innerHeight
+		let image = this.imageViewer.currentImage
+		if (image != undefined &&
+			image.loaded &&
+			(canvasW / canvasH) < image!.ar) {
+			canvasX = 0
+			canvasW = window.innerWidth
+			this.menuShouldAutoHide = true
+		} else {
+			canvasX = menuWidth
+			this.menuShouldAutoHide = false
+		}
+
+		this.imageViewer.div.style({ "left": canvasX })
+		let canvas = this.imageViewer.canvas.element
+		canvas.width = canvasW
+		canvas.height = canvasH
 	}
 }

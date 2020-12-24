@@ -2,6 +2,7 @@ import { ImageDataObj } from "./images"
 
 export class AppImage {
 
+	ar = 1
 	image = new Image()
 	loaded = false
 
@@ -11,6 +12,7 @@ export class AppImage {
 	) {
 		this.image.addEventListener("load", () => {
 			this.loaded = true
+			this.ar = this.image.width / this.image.height
 			onLoaded()
 		})
 	}
