@@ -71,7 +71,8 @@ export class ImageViewer extends Container {
 			this.drawGrid()
 		}
 
-		this.setText(this.currentImage!.options.authorName, this.currentImage!.options.sourceUrl)
+		let imgOptions = this.currentImage!.options
+		this.setText(`"${imgOptions.name}" by ${imgOptions.authorName}`, imgOptions.sourceUrl)
 		this.onImageChanged.trigger()
 	}
 

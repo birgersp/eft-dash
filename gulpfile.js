@@ -8,7 +8,7 @@ var terser = require("gulp-terser")
 var sourcemaps = require("gulp-sourcemaps");
 var preprocess = require("gulp-preprocess");
 
-var miscFileGlob = ["src/*.html", "favicon.ico", "images/*"];
+var miscFileGlob = ["src/*.html", "favicon.ico", "images/lowres/*"];
 var dist = "dist"
 
 var b = browserify({

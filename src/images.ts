@@ -10,59 +10,66 @@ export let images: ImageDataObj[] = []
 
 images.push({
 	authorName: "u/monkimonkimonk",
-	hotkey: "1",
+	hotkey: `${images.length+1}`,
 	image: "https://i.redd.it/8udfaht87zd51.png",
 	name: "Customs",
 	sourceUrl: "https://www.reddit.com/r/EscapefromTarkov/comments/i0k2qz/updated_customs_map_for_127_with_loot_caches/"
 })
 images.push({
 	authorName: "Marvelin",
-	hotkey: "2",
+	hotkey: `${images.length+1}`,
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/woods_marvelin.jpg.d4692fbf57cdfd608671b16f8caf89ae.jpg",
 	name: "Woods",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
 	authorName: "Marvelin",
-	hotkey: "3",
+	hotkey: `${images.length+1}`,
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2019_01/shoreline_marvelin_2_2.jpg.496b8c902f7b88b12d474fd3107ce578.jpg",
 	name: "Shoreline",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
 	authorName: "Marvelin",
-	hotkey: "4",
+	hotkey: `${images.length+1}`,
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Factory_marvelin1_2.jpg.0c4c03b58ecfff4b1fe15afef5291e97.jpg",
 	name: "Factory",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
-	authorName: "JustaMapman",
-	hotkey: "5",
-	image: "ReserveComboMap.png",
+	authorName: "Muhawi",
+	hotkey: `${images.length+1}`,
+	image: "Reserve-small.jpg",
 	name: "Reserve",
-	sourceUrl: "https://escapefromtarkov.gamepedia.com/File:ReserveComboMap.png"
+	sourceUrl: "https://escapefromtarkov.gamepedia.com/File:3D_Map_by_loweffortsaltbox.png"
+})
+images.push({
+	authorName: "u/Lorathor6",
+	hotkey: `${images.length+1}`,
+	image: "https://i.redd.it/bqftzweimvx31.png",
+	name: "Interchange",
+	sourceUrl: "https://www.reddit.com/r/EscapefromTarkov/comments/8gixyg/interchange_map_incl_loot_and_keys"
 })
 images.push({
 	authorName: "Marvelin",
-	hotkey: "6",
+	hotkey: `${images.length+1}`,
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/Doorms_marvelin1_2.thumb.jpg.46d00383a0269b37daeb1a3457cca03c.jpg",
 	name: "Dorms, Customs",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
 	authorName: "Marvelin",
-	hotkey: "7",
+	hotkey: `${images.length+1}`,
 	image: "https://forum.escapefromtarkov.com/uploads/monthly_2018_02/spa_marvelin1_1.jpg.e192f88f3ba73bccdcb437185a44d1d5.jpg",
 	name: "Resort, Shoreline",
 	sourceUrl: "https://forum.escapefromtarkov.com/topic/56652-maps-of-tarkov"
 })
 images.push({
-	authorName: "u/Lorathor6",
-	hotkey: "8",
-	image: "https://i.redd.it/bqftzweimvx31.png",
-	name: "Interchange",
-	sourceUrl: "https://www.reddit.com/r/EscapefromTarkov/comments/8gixyg/interchange_map_incl_loot_and_keys"
+	authorName: "SIIYAML0",
+	hotkey: "u",
+	image: "ReserveUnderground-small.jpg",
+	name: "Reserve UG",
+	sourceUrl: "https://escapefromtarkov.gamepedia.com/File:ReserveExpandedUnderground.png"
 })
 images.push({
 	authorName: "Pestily",
