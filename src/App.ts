@@ -31,12 +31,11 @@ export class App {
 		this.resizeTimer = new Timer(
 			App.RESIZE_TIMER_MS,
 			() => {
-				this.checkResetHidingTimer()
-
 				this.updateCanvasSize()
 				if (this.imageViewer.visible) {
 					this.imageViewer.draw()
 				}
+				this.checkResetHidingTimer()
 			}
 		)
 
@@ -58,6 +57,11 @@ export class App {
 		window.addEventListener("beforeunload", () => { this.saveState() })
 		this.populateMenu()
 		this.loadState()
+		if (this.imageViewer.currentImage == undefined &&
+			this.appImages.length > 0) {
+			this.imageViewer.currentImage = this.appImages[0]
+			this.appImages[0].load()
+		}
 		this.updateCanvasSize()
 		this.parseSearchParams()
 		this.imageViewer.draw()
