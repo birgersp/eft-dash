@@ -68,7 +68,7 @@ export class App {
 		this.searchHistory.update()
 		this.headerHidingTimer.reset()
 		this.searchHistory.div.style({
-			"left": `${this.menu.div.element.getBoundingClientRect().width}px`
+			"left": `${this.menu.getWidth()}px`
 		})
 	}
 
@@ -129,7 +129,7 @@ export class App {
 				this.searchHistory.update()
 				window.open(url)
 			})
-		this.menu.div.append(this.searchInput)
+		this.menu.add(this.searchInput)
 		this.hotkeys.set("s", () => {
 			this.searchInput.element.value = ""
 			this.searchInput.element.focus()
@@ -288,7 +288,7 @@ export class App {
 
 	updateCanvasSize() {
 
-		let menuWidth = this.menu.div.element.getBoundingClientRect().width
+		let menuWidth = this.menu.getWidth()
 		let canvasX: number
 		let canvasW = window.innerWidth - menuWidth
 		let canvasH = window.innerHeight

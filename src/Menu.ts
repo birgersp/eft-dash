@@ -23,6 +23,10 @@ export class Menu extends Container {
 		})
 	}
 
+	add(elem: Elem<any>) {
+		this.div.append(elem)
+	}
+
 	addButton(label: string, action: () => void) {
 
 		new Elem("input")
@@ -38,5 +42,10 @@ export class Menu extends Container {
 
 		new Elem("br")
 			.appendTo(this.div)
+
+	}
+
+	getWidth(): number {
+		return this.div.element.getBoundingClientRect().width
 	}
 }
