@@ -21,7 +21,7 @@ export class ImageViewer extends Container {
 	}
 	onImageChanged = new Signal()
 	onLoading = new Signal()
-	showGrid = false
+	showGrid = true
 
 	constructor() {
 
