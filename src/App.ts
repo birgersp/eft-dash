@@ -30,13 +30,7 @@ export class App {
 
 		this.resizeTimer = new Timer(
 			App.RESIZE_TIMER_MS,
-			() => {
-				this.updateCanvasSize()
-				if (this.imageViewer.visible) {
-					this.imageViewer.draw()
-				}
-				this.checkResetHidingTimer()
-			}
+			() => { this.onResized() }
 		)
 
 		this.headerHidingTimer = new Timer(
@@ -202,6 +196,14 @@ export class App {
 		let action = this.hotkeys.get(key)
 		action?.()
 
+		this.checkResetHidingTimer()
+	}
+
+	onResized() {
+		this.updateCanvasSize()
+		if (this.imageViewer.visible) {
+			this.imageViewer.draw()
+		}
 		this.checkResetHidingTimer()
 	}
 

@@ -5,6 +5,7 @@ import { common } from "./common"
 export class Menu extends Container {
 
 	hasMouseOver = false
+	innerDiv = new Elem("div")
 
 	constructor() {
 
@@ -13,18 +14,22 @@ export class Menu extends Container {
 		this.div
 			.on("mouseover", () => { this.hasMouseOver = true })
 			.on("mouseout", () => { this.hasMouseOver = false })
-		this.div.style({
+		this.innerDiv.style({
 			"background": common.BG_COLOR,
-			"overflow-y": "auto",
 			"padding": "1em",
-			"position": "absolute",
-			"top": "0",
 			"width": common.MENU_WIDTH
+		})
+		this.div.append(this.innerDiv)
+		this.div.style({
+			"height": "100%",
+			"overflow-y": "auto",
+			"position": "absolute",
+			"top": "0px"
 		})
 	}
 
 	add(elem: Elem<any>) {
-		this.div.append(elem)
+		this.innerDiv.append(elem)
 	}
 
 	addButton(label: string, action: () => void) {
@@ -38,10 +43,10 @@ export class Menu extends Container {
 				"width": "100%"
 			})
 			.on("click", action)
-			.appendTo(this.div)
+			.appendTo(this.innerDiv)
 
 		new Elem("br")
-			.appendTo(this.div)
+			.appendTo(this.innerDiv)
 
 	}
 
