@@ -6,15 +6,27 @@ export class Container {
 	div = new Elem("div")
 	visible = true
 
+	constructor() {
+		// this.div.style({})
+	}
+
 	hide() {
 
-		this.div.style({ "visibility": "hidden" })
+		this.div.style({
+			"opacity": "0",
+			"transition": "visibility 0s linear 500ms, opacity 500ms",
+			"visibility": "hidden"
+		})
 		this.visible = false
 	}
 
 	show() {
 
-		this.div.style({ "visibility": "visible" })
+		this.div.style({
+			"opacity": "1",
+			"transition": "",
+			"visibility": "visible"
+		})
 		this.visible = true
 	}
 }
