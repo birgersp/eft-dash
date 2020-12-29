@@ -5,5 +5,5 @@ $files = Get-ChildItem "$srcDir"
 foreach ($name in $files) {
 
 	$file = "$srcDir/$name"
-	resize-image.py file="$file" output_dir="$destDir" mheight=1440 mwidth=2560
+	py C:\Users\birge\repo\tools\scripts\resize-image.py file="$file" output_dir="$destDir" mheight=1440 mwidth=2560
 }
