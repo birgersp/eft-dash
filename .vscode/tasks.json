@@ -33,6 +33,11 @@
 				"bundle",
 				"run"
 			]
+		},
+		{
+			"label": "push to server",
+			"type": "shell",
+			"command": "./push-to-server.ps1"
 		}
 	]
 }
