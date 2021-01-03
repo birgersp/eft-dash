@@ -16,11 +16,11 @@ images.push({
 	sourceUrl: "https://www.reddit.com/r/EscapefromTarkov/comments/i0k2qz/updated_customs_map_for_127_with_loot_caches/"
 })
 images.push({
-	authorName: "Jindouz",
+	authorName: "u/Jindouz",
 	hotkey: `${images.length + 1}`,
-	image: "Woods-small.jpg",
+	image: "https://i.redd.it/58iiphfq3z861.png",
 	name: "Woods",
-	sourceUrl: "https://escapefromtarkov.gamepedia.com/File:Glory4lyfeWoods_map_v4_marked.png"
+	sourceUrl: "https://www.reddit.com/r/EscapefromTarkov/comments/kp491k/expanded_woods_map_v5_entirely_remade_to_match/"
 })
 images.push({
 	authorName: "Enhol",
