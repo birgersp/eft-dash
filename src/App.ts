@@ -91,6 +91,10 @@ export class App {
 		if (menuAction.hotkey != null) {
 			text += `(${menuAction.hotkey})`
 			this.hotkeys.set(menuAction.hotkey, menuAction.action)
+			let hkCapitalized = menuAction.hotkey!.toUpperCase()
+			if (hkCapitalized != menuAction.hotkey!) {
+				this.hotkeys.set(hkCapitalized, menuAction.action)
+			}
 		}
 		text += menuAction.label
 		this.menu.addButton(text, menuAction.action)
